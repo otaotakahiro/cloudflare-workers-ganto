@@ -145,6 +145,9 @@ function renderGanttChart() {
     renderTimelineHeader(displayStartDate, totalUnitsInView, currentViewMode);
     renderTaskInfoRows(validTasks);
     renderTaskTimelineRows(validTasks, displayStartDate, totalUnitsInView, currentViewMode);
+
+    // Synchronize row heights between the info area and timeline area
+    synchronizeRowHeights();
 }
 
 function getDisplayParameters(tasks, viewMode) {
@@ -356,3 +359,25 @@ Date.prototype.getWeek = function() {
   return 1 + Math.round(((date.getTime() - week1.getTime()) / 86400000 - 3 + (week1.getDay() + 6) % 7) / 7);
 }
 */
+
+// Function to synchronize row heights
+function synchronizeRowHeights() {
+    const infoRows = taskInfoAreaContainer.querySelectorAll('.gantt-task-row-info');
+    const timelineRows = timelineBarAreaContainer.querySelectorAll('.gantt-task-row-timeline');
+
+    if (infoRows.length !== timelineRows.length) {
+        console.warn('Row count mismatch between info and timeline areas. Cannot sync heights.');
+        return;
+    }
+
+    // Use requestAnimationFrame to ensure layout calculations are complete
+    requestAnimationFrame(() => {
+        for (let i = 0; i < infoRows.length; i++) {
+            const infoRowHeight = infoRows[i].offsetHeight;
+            // Set the height for the corresponding timeline row
+            // Ensure a minimum height as well, in case infoRow height is very small
+            timelineRows[i].style.height = `${Math.max(infoRowHeight, 25)}px`; // Use minimum height from CSS or actual height
+        }
+    });
+
+}

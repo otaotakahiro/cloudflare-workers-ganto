@@ -56,7 +56,7 @@ h1 {
 .gantt-fixed-left {
     display: flex;
     flex-direction: column;
-    width: 270px; /* Further reduced: Name(min 100) + Assignee(60) + Start(55) + End(55) = 270px */
+    width: 300px; /* Adjusted again: Name(min 100) + Assignee(100) + Start(50) + End(50) = 300px */
     flex-shrink: 0;
     border-right: 1px solid #ddd;
     background-color: #fdfdfd;
@@ -82,7 +82,7 @@ h1 {
 }
 
 .gantt-header-name {
-    min-width: 100px; /* Further reduced min-width */
+    min-width: 100px;
     flex-grow: 1;
     padding: 2px 4px;
     box-sizing: border-box;
@@ -90,7 +90,7 @@ h1 {
 }
 
 .gantt-header-assignee {
-    width: 60px; /* Further reduced fixed width */
+    width: 100px; /* Increased width */
     flex-shrink: 0;
     padding: 2px 4px;
     box-sizing: border-box;
@@ -98,7 +98,7 @@ h1 {
 }
 
 .gantt-header-start-date {
-    width: 55px; /* Further reduced fixed width */
+    width: 50px; /* Decreased width */
     flex-shrink: 0;
     padding: 2px 4px;
     box-sizing: border-box;
@@ -106,7 +106,7 @@ h1 {
 }
 
 .gantt-header-end-date {
-    width: 55px; /* Further reduced fixed width */
+    width: 50px; /* Decreased width */
     flex-shrink: 0;
     padding: 2px 4px;
     box-sizing: border-box;
@@ -165,7 +165,7 @@ h1 {
 }
 
 .gantt-task-assignee-cell {
-    width: 60px; /* Match header */
+    width: 100px; /* Match header */
     flex-shrink: 0;
     padding: 2px 4px;
     box-sizing: border-box;
@@ -175,7 +175,7 @@ h1 {
 
 /* 開始日セル用のスタイルを追加 */
 .gantt-task-start-date-cell {
-    width: 55px; /* Match header */
+    width: 50px; /* Match header */
     flex-shrink: 0;
     padding: 2px 4px;
     box-sizing: border-box;
@@ -185,7 +185,7 @@ h1 {
 
 /* 終了日セル用のスタイルを追加 */
 .gantt-task-end-date-cell {
-    width: 55px; /* Match header */
+    width: 50px; /* Match header */
     flex-shrink: 0;
     padding: 2px 4px;
     box-sizing: border-box;
