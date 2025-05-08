@@ -188,6 +188,18 @@ function renderTaskInfoRows(tasks) {
         taskAssigneeCell.title = task.assignee || '-';
         taskInfoRow.appendChild(taskAssigneeCell);
 
+        // 開始日セルを追加
+        const taskStartDateCell = document.createElement('div');
+        taskStartDateCell.className = 'gantt-task-start-date-cell';
+        taskStartDateCell.textContent = task.start ? task.start : '-'; // YYYY-MM-DD形式のはず
+        taskInfoRow.appendChild(taskStartDateCell);
+
+        // 終了日セルを追加
+        const taskEndDateCell = document.createElement('div');
+        taskEndDateCell.className = 'gantt-task-end-date-cell';
+        taskEndDateCell.textContent = task.end ? task.end : '-'; // YYYY-MM-DD形式のはず
+        taskInfoRow.appendChild(taskEndDateCell);
+
         const taskMemoCell = document.createElement('div');
         taskMemoCell.className = 'gantt-task-memo-cell';
         taskMemoCell.textContent = task.memo || '-';

@@ -9,6 +9,7 @@ body {
 h1 {
     text-align: center;
     color: #2c3e50;
+    font-size: 1.8em; /* H1タイトルのフォントサイズを調整 */
 }
 
 /* View Switcher Styles */
@@ -53,7 +54,7 @@ h1 {
 }
 
 .gantt-fixed-left {
-    width: 40%; /* Adjust as needed for Task Name + Assignee + Memo */
+    width: 55%; /* Adjust for Task Name, Assignee, Start Date, End Date, Memo */
     flex-shrink: 0; /* Prevent this column from shrinking */
     border-right: 1px solid #ddd;
     background-color: #fdfdfd; /* Slightly different background for fixed part */
@@ -78,22 +79,37 @@ h1 {
 }
 
 .gantt-header-name {
-    width: 45%; /* Relative to .gantt-header-fixed */
+    width: 30%; /* Adjusted for new columns */
     padding: 10px;
     box-sizing: border-box;
     border-right: 1px solid #2980b9;
 }
 
 .gantt-header-assignee {
-    width: 25%; /* Relative to .gantt-header-fixed */
+    width: 20%; /* Adjusted for new columns */
     padding: 10px;
     box-sizing: border-box;
-    border-right: 1px solid #2980b9; /* Memo列との境界線を追加 */
+    border-right: 1px solid #2980b9;
 }
 
-/* Memoヘッダー用のスタイルを追加 */
+/* 開始日ヘッダー用のスタイルを追加 */
+.gantt-header-start-date {
+    width: 15%; /* New column */
+    padding: 10px;
+    box-sizing: border-box;
+    border-right: 1px solid #2980b9;
+}
+
+/* 終了日ヘッダー用のスタイルを追加 */
+.gantt-header-end-date {
+    width: 15%; /* New column */
+    padding: 10px;
+    box-sizing: border-box;
+    border-right: 1px solid #2980b9;
+}
+
 .gantt-header-memo {
-    width: 30%; /* Relative to .gantt-header-fixed */
+    width: 20%; /* Adjusted for new columns */
     padding: 10px;
     box-sizing: border-box;
 }
@@ -139,7 +155,7 @@ h1 {
 
 /* Individual Cells in Task Info Area */
 .gantt-task-name-cell {
-    width: 45%; /* Matches header */
+    width: 30%; /* Matches header */
     padding: 10px;
     box-sizing: border-box;
     border-right: 1px solid #eee;
@@ -150,7 +166,7 @@ h1 {
 }
 
 .gantt-task-assignee-cell {
-    width: 25%; /* Matches header */
+    width: 20%; /* Matches header */
     padding: 10px;
     box-sizing: border-box;
     border-right: 1px solid #eee; /* Memoセルとの境界線を追加 */
@@ -160,9 +176,27 @@ h1 {
     word-break: break-word;
 }
 
+/* 開始日セル用のスタイルを追加 */
+.gantt-task-start-date-cell {
+    width: 15%; /* Matches header */
+    padding: 10px;
+    box-sizing: border-box;
+    border-right: 1px solid #eee;
+    word-break: break-word; /* In case date format is long or wraps */
+}
+
+/* 終了日セル用のスタイルを追加 */
+.gantt-task-end-date-cell {
+    width: 15%; /* Matches header */
+    padding: 10px;
+    box-sizing: border-box;
+    border-right: 1px solid #eee;
+    word-break: break-word; /* In case date format is long or wraps */
+}
+
 /* Memoセル用のスタイルを追加 */
 .gantt-task-memo-cell {
-    width: 30%; /* Matches header */
+    width: 20%; /* Matches header */
     padding: 10px;
     box-sizing: border-box;
     /* white-space: nowrap; */ /* 折り返しを許可 */
