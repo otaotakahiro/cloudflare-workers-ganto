@@ -226,32 +226,27 @@ function renderTaskInfoRows(tasks) {
 
 function renderTaskTimelineRows(tasks, timelineStartDate, totalUnitsInView, viewMode) {
     tasks.forEach(task => {
-        if (task.id === 'TASK-003') { // 3社MTGのID
-            console.log('Debugging TASK-003 (3社MTG) - renderTaskTimelineRows - Before calc:');
-            console.log('  task.start (string):', task.start);
-            console.log('  task.end (string):', task.end);
-            console.log('  timelineStartDate (from params):', timelineStartDate);
-        }
+        // 1. Create the timeline row element for this task first
+        const taskTimelineRow = document.createElement('div');
+        taskTimelineRow.className = 'gantt-task-row-timeline';
 
-        let offsetUnits = 0;
-        let durationUnits = 0;
+        // Check if task has valid dates before proceeding to calculate bar
+        if (!task.start || !task.end) {
+            // Handle tasks without dates (e.g., skip rendering a bar or render differently)
+            timelineBarAreaContainer.appendChild(taskTimelineRow); // Append empty row
+            return; // Skip bar rendering for this task
+        }
 
         // Convert string dates from task object to Date objects, using local timezone's midnight.
-        const taskStartParts = task.start.split('-').map(Number); // [YYYY, MM, DD]
-        const taskEndParts = task.end.split('-').map(Number);     // [YYYY, MM, DD]
-
-        // Note: JavaScript's Date month is 0-indexed (0 for January, 11 for December)
+        const taskStartParts = task.start.split('-').map(Number);
+        const taskEndParts = task.end.split('-').map(Number);
         const taskStartDateLocal = new Date(taskStartParts[0], taskStartParts[1] - 1, taskStartParts[2]);
         const taskEndDateLocal = new Date(taskEndParts[0], taskEndParts[1] - 1, taskEndParts[2]);
-
-        // timelineStartDate is already a Date object, ensure it's at local midnight for comparison
         const normalizedTimelineStartLocal = new Date(timelineStartDate.getFullYear(), timelineStartDate.getMonth(), timelineStartDate.getDate());
 
-        if (task.id === 'TASK-003') {
-            console.log('  taskStartDateLocal (Date obj):', taskStartDateLocal);
-            console.log('  normalizedTimelineStartLocal (Date obj):', normalizedTimelineStartLocal);
-        }
-
+        // 2. Calculate offset and duration
+        let offsetUnits = 0;
+        let durationUnits = 0;
         switch (viewMode) {
             case 'daily':
             default:
@@ -259,23 +254,20 @@ function renderTaskTimelineRows(tasks, timelineStartDate, totalUnitsInView, view
                 durationUnits = (taskEndDateLocal.getTime() - taskStartDateLocal.getTime()) / (1000 * 60 * 60 * 24) + 1;
                 break;
         }
-
         offsetUnits = Math.round(offsetUnits);
         durationUnits = Math.max(1, Math.round(durationUnits));
 
-        if (task.id === 'TASK-003') {
-            console.log('  CALCULATED offsetUnits (final):', offsetUnits);
-            console.log('  CALCULATED durationUnits (final):', durationUnits);
-        }
-
+        // 3. Create the task bar element
         const taskBar = document.createElement('div');
         taskBar.className = 'gantt-task-bar';
+
+        // 4. Set styles for the task bar
         const leftPercentage = Math.max(0, (offsetUnits / totalUnitsInView) * 100);
         const widthPercentage = Math.min((durationUnits / totalUnitsInView) * 100, 100 - leftPercentage);
-
         taskBar.style.left = `${leftPercentage}%`;
         taskBar.style.width = `${widthPercentage}%`;
 
+        // Add progress bar inside the task bar
         const progressBar = document.createElement('div');
         progressBar.className = 'gantt-task-progress-bar';
         progressBar.style.width = `${task.progress}%`;
@@ -285,8 +277,10 @@ function renderTaskTimelineRows(tasks, timelineStartDate, totalUnitsInView, view
             taskBar.classList.add('tentative');
         }
 
-        // The task bar is appended directly to the row, which acts as its container
+        // 5. Append the task bar to the timeline row
         taskTimelineRow.appendChild(taskBar);
+
+        // 6. Append the completed timeline row to the main container
         timelineBarAreaContainer.appendChild(taskTimelineRow);
     });
 }
