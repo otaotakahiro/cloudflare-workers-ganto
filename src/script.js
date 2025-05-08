@@ -211,26 +211,34 @@ function renderTaskTimelineRows(tasks, timelineStartDate, totalUnitsInView, view
         const taskTimelineRow = document.createElement('div');
         taskTimelineRow.className = 'gantt-task-row-timeline'; // New class from CSS
 
-        const taskStartDate = new Date(task.start);
-        const taskEndDate = new Date(task.end);
         let offsetUnits = 0;
         let durationUnits = 0;
 
-        // Ensure dates are compared at the start of the day (midnight)
-        const normalizedTimelineStart = new Date(timelineStartDate.getFullYear(), timelineStartDate.getMonth(), timelineStartDate.getDate());
-        const normalizedTaskStart = new Date(taskStartDate.getFullYear(), taskStartDate.getMonth(), taskStartDate.getDate());
-        const normalizedTaskEnd = new Date(taskEndDate.getFullYear(), taskEndDate.getMonth(), taskEndDate.getDate());
+        // Convert string dates from task object to Date objects, treating them as UTC
+        // to avoid timezone offsets when only date is relevant.
+        const taskStartStr = task.start;
+        const taskEndStr = task.end;
+
+        const taskStartDateUTC = new Date(taskStartStr + 'T00:00:00Z');
+        const taskEndDateUTC = new Date(taskEndStr + 'T00:00:00Z');
+
+        // Also treat timelineStartDate as UTC for consistent comparison
+        const timelineStartDateUTC = new Date(timelineStartDate.getFullYear(), timelineStartDate.getMonth(), timelineStartDate.getDate(), 0, 0, 0, 0);
+        // Convert timelineStartDate to a Z মানে UTC string, then back to Date to clear any local TZ component effectively
+        const normalizedTimelineStart = new Date(timelineStartDateUTC.toISOString().substring(0,10) + 'T00:00:00Z');
 
         switch (viewMode) {
             case 'daily':
             default:
-                offsetUnits = Math.round((normalizedTaskStart - normalizedTimelineStart) / (1000 * 60 * 60 * 24));
-                // Duration: include the end date. If start and end are same, duration is 1 day.
-                durationUnits = Math.round((normalizedTaskEnd - normalizedTaskStart) / (1000 * 60 * 60 * 24)) + 1;
+                // Calculate difference in days (UTC)
+                offsetUnits = (taskStartDateUTC.getTime() - normalizedTimelineStart.getTime()) / (1000 * 60 * 60 * 24);
+                durationUnits = (taskEndDateUTC.getTime() - taskStartDateUTC.getTime()) / (1000 * 60 * 60 * 24) + 1;
                 break;
         }
-        // Ensure duration is at least 1 if start and end are on the same day or if end is before start (data error)
-        if (durationUnits <= 0) durationUnits = 1;
+
+        // Round to nearest integer for offset and duration, ensure duration is at least 1
+        offsetUnits = Math.round(offsetUnits);
+        durationUnits = Math.max(1, Math.round(durationUnits));
 
         const taskBar = document.createElement('div');
         taskBar.className = 'gantt-task-bar';

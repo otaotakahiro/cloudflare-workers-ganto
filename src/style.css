@@ -1,15 +1,15 @@
 body {
-    font-family: sans-serif;
+    font-family: 'Helvetica Neue', Arial, sans-serif;
     margin: 20px;
     background-color: #f4f7f6;
     color: #333;
-    font-size: 0.8em; /* 全体のフォントサイズを80%に */
+    font-size: 0.75em; /* 全体のフォントサイズをさらに調整 */
 }
 
 h1 {
     text-align: center;
     color: #2c3e50;
-    font-size: 1.8em; /* H1タイトルのフォントサイズを調整 */
+    font-size: 1.7em; /* H1も相対的に調整 */
 }
 
 /* View Switcher Styles */
