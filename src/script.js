@@ -165,6 +165,14 @@ function renderTaskInfoRows(tasks) {
         taskAssigneeCell.title = task.assignee || '-';
         taskInfoRow.appendChild(taskAssigneeCell);
 
+        // Memoセルを追加
+        const taskMemoCell = document.createElement('div');
+        taskMemoCell.className = 'gantt-task-memo-cell'; // New class from CSS
+        taskMemoCell.textContent = task.memo || '-'; // project_data.json に memo があれば表示、なければ '-'
+        taskMemoCell.title = task.memo || 'クリックしてメモを編集';
+        // あとでクリックイベントを追加する
+        taskInfoRow.appendChild(taskMemoCell);
+
         taskInfoAreaContainer.appendChild(taskInfoRow);
     });
 }

@@ -52,7 +52,7 @@ h1 {
 }
 
 .gantt-fixed-left {
-    width: 30%; /* Adjust as needed for Task Name + Assignee */
+    width: 40%; /* Adjust as needed for Task Name + Assignee + Memo */
     flex-shrink: 0; /* Prevent this column from shrinking */
     border-right: 1px solid #ddd;
     background-color: #fdfdfd; /* Slightly different background for fixed part */
@@ -77,14 +77,22 @@ h1 {
 }
 
 .gantt-header-name {
-    width: 60%; /* Relative to .gantt-header-fixed */
+    width: 45%; /* Relative to .gantt-header-fixed */
     padding: 10px;
     box-sizing: border-box;
     border-right: 1px solid #2980b9;
 }
 
 .gantt-header-assignee {
-    width: 40%; /* Relative to .gantt-header-fixed */
+    width: 25%; /* Relative to .gantt-header-fixed */
+    padding: 10px;
+    box-sizing: border-box;
+    border-right: 1px solid #2980b9; /* Memo列との境界線を追加 */
+}
+
+/* Memoヘッダー用のスタイルを追加 */
+.gantt-header-memo {
+    width: 30%; /* Relative to .gantt-header-fixed */
     padding: 10px;
     box-sizing: border-box;
 }
@@ -130,7 +138,7 @@ h1 {
 
 /* Individual Cells in Task Info Area */
 .gantt-task-name-cell {
-    width: 60%; /* Matches header */
+    width: 45%; /* Matches header */
     padding: 10px;
     box-sizing: border-box;
     border-right: 1px solid #eee;
@@ -140,12 +148,28 @@ h1 {
 }
 
 .gantt-task-assignee-cell {
-    width: 40%; /* Matches header */
+    width: 25%; /* Matches header */
+    padding: 10px;
+    box-sizing: border-box;
+    border-right: 1px solid #eee; /* Memoセルとの境界線を追加 */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Memoセル用のスタイルを追加 */
+.gantt-task-memo-cell {
+    width: 30%; /* Matches header */
     padding: 10px;
     box-sizing: border-box;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    cursor: pointer; /* クリック可能であることを示すカーソル */
+}
+
+.gantt-task-memo-cell:hover {
+    background-color: #f0f0f0; /* ホバー時の背景色 */
 }
 
 /* Timeline Day Cells */
@@ -180,7 +204,6 @@ h1 {
     bottom: 5px; /* Align with padding-bottom of parent */
     height: auto; /* Let top and bottom define height */
     background-color: #5dade2;
-    border-radius: 4px;
     color: white;
     font-size: 0.8em;
     /* line-height: 20px; /* Removed as height is now auto */
