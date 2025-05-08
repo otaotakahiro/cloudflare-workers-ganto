@@ -54,58 +54,64 @@ h1 {
 }
 
 .gantt-fixed-left {
-    width: 45%; /* Adjusted: Task Name, Assignee, Start, End (Memo removed) */
-    flex-shrink: 0; /* Prevent this column from shrinking */
+    /* width: 45%; */ /* Removed percentage width */
+    display: flex; /* To allow children to have fixed/flex widths */
+    flex-direction: column; /* Stack header and task area vertically */
+    width: 340px; /* Example fixed width: Name(120) + Assignee(80) + Start(70) + End(70) = 340px, adjust as needed */
+    flex-shrink: 0;
     border-right: 1px solid #ddd;
-    background-color: #fdfdfd; /* Slightly different background for fixed part */
+    background-color: #fdfdfd;
 }
 
 .gantt-scrollable-right {
-    width: 70%; /* Remaining width */
-    overflow-x: auto; /* Enable horizontal scroll for the timeline part */
-    position: relative; /* For potential sticky header later */
+    /* width: 55%; */ /* Will take remaining space */
+    flex-grow: 1; /* Allow this to take remaining space */
+    overflow-x: auto;
+    position: relative;
 }
 
 /* Headers */
 .gantt-header-fixed {
-    display: flex;
+    display: flex; /* Layout for header cells */
     background-color: #3498db;
     color: white;
     font-weight: bold;
     border-bottom: 1px solid #2980b9;
-    position: sticky; /* Sticky header for the fixed left part */
+    position: sticky;
     top: 0;
     z-index: 20;
 }
 
 .gantt-header-name {
-    width: 40%;
-    padding: 2px 4px; /* Further reduced padding */
+    /* width: 40%; */
+    min-width: 120px; /* Minimum width for task name */
+    flex-grow: 1; /* Allow to take more space if available within fixed-left */
+    padding: 2px 4px;
     box-sizing: border-box;
     border-right: 1px solid #2980b9;
 }
 
 .gantt-header-assignee {
-    width: 25%;
-    padding: 2px 4px; /* Further reduced padding */
+    width: 80px; /* Fixed width */
+    flex-shrink: 0;
+    padding: 2px 4px;
     box-sizing: border-box;
     border-right: 1px solid #2980b9;
 }
 
-/* 開始日ヘッダー用のスタイルを追加 */
 .gantt-header-start-date {
-    width: 17.5%;
-    padding: 2px 4px; /* Further reduced padding */
+    width: 70px; /* Fixed width */
+    flex-shrink: 0;
+    padding: 2px 4px;
     box-sizing: border-box;
     border-right: 1px solid #2980b9;
 }
 
-/* 終了日ヘッダー用のスタイルを追加 */
 .gantt-header-end-date {
-    width: 17.5%;
-    padding: 2px 4px; /* Further reduced padding */
+    width: 70px; /* Fixed width */
+    flex-shrink: 0;
+    padding: 2px 4px;
     box-sizing: border-box;
-    /* No border-right needed if it's the last column in fixed-left */
 }
 
 .gantt-timeline-header {
@@ -133,9 +139,8 @@ h1 {
 
 /* Row Structure (Conceptual - JS will create these parts) */
 .gantt-task-row-info {
-    display: flex;
+    display: flex; /* Layout for task cells */
     border-bottom: 1px solid #eee;
-    /* height should be synced with .gantt-task-row-timeline */
 }
 
 .gantt-task-row-timeline {
@@ -148,8 +153,10 @@ h1 {
 
 /* Individual Cells in Task Info Area */
 .gantt-task-name-cell {
-    width: 40%;
-    padding: 2px 4px; /* Further reduced padding */
+    /* width: 40%; */
+    min-width: 120px; /* Match header */
+    flex-grow: 1; /* Match header */
+    padding: 2px 4px;
     box-sizing: border-box;
     border-right: 1px solid #eee;
     word-break: break-word;
@@ -161,8 +168,9 @@ h1 {
 }
 
 .gantt-task-assignee-cell {
-    width: 25%;
-    padding: 2px 4px; /* Further reduced padding */
+    width: 80px; /* Match header */
+    flex-shrink: 0;
+    padding: 2px 4px;
     box-sizing: border-box;
     border-right: 1px solid #eee;
     word-break: break-word;
@@ -170,8 +178,9 @@ h1 {
 
 /* 開始日セル用のスタイルを追加 */
 .gantt-task-start-date-cell {
-    width: 17.5%;
-    padding: 2px 4px; /* Further reduced padding */
+    width: 70px; /* Match header */
+    flex-shrink: 0;
+    padding: 2px 4px;
     box-sizing: border-box;
     border-right: 1px solid #eee;
     word-break: break-word;
@@ -179,10 +188,10 @@ h1 {
 
 /* 終了日セル用のスタイルを追加 */
 .gantt-task-end-date-cell {
-    width: 17.5%;
-    padding: 2px 4px; /* Further reduced padding */
+    width: 70px; /* Match header */
+    flex-shrink: 0;
+    padding: 2px 4px;
     box-sizing: border-box;
-    /* No border-right needed if it's the last column in fixed-left */
     word-break: break-word;
 }
 
@@ -192,9 +201,9 @@ h1 {
     box-sizing: border-box;
     text-align: center;
     border-right: 1px solid #2980b9;
-    min-width: 35px; /* Re-adjusted for MM/DD with smaller padding */
+    width: 40px; /* Fixed width */
     height: 100%;
-    padding: 2px 1px; /* Further reduced padding */
+    padding: 2px 1px;
     color: white;
 }
 
