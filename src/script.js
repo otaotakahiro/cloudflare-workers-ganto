@@ -196,15 +196,10 @@ function renderTaskTimelineRows(tasks, timelineStartDate, totalUnitsInView, view
         taskBar.style.left = `${leftPercentage}%`;
         taskBar.style.width = `${widthPercentage}%`;
 
-        const taskText = document.createElement('span');
-        taskText.className = 'gantt-task-bar-text';
-        taskText.textContent = `${task.name} (${task.progress}%)`;
-        taskBar.appendChild(taskText);
-
         const progressBar = document.createElement('div');
         progressBar.className = 'gantt-task-progress-bar';
         progressBar.style.width = `${task.progress}%`;
-        taskBar.insertBefore(progressBar, taskText);
+        taskBar.appendChild(progressBar);
 
         if (task.isTentative) {
             taskBar.classList.add('tentative');

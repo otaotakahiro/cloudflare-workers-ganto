@@ -124,6 +124,8 @@ h1 {
     position: relative; /* For task bar container */
     /* height should be synced with .gantt-task-row-info */
     min-height: 41px; /* Match typical row height with padding */
+    padding: 5px 0; /* Add some vertical padding for the bar */
+    box-sizing: border-box;
 }
 
 /* Individual Cells in Task Info Area */
@@ -174,13 +176,17 @@ h1 {
 /* Task Bar Styling */
 .gantt-task-bar {
     position: absolute;
-    height: 20px;
+    top: 5px; /* Align with padding-top of parent */
+    bottom: 5px; /* Align with padding-bottom of parent */
+    height: auto; /* Let top and bottom define height */
     background-color: #5dade2;
     border-radius: 4px;
     color: white;
     font-size: 0.8em;
-    line-height: 20px;
-    text-align: center;
+    /* line-height: 20px; /* Removed as height is now auto */
+    display: flex; /* For centering text if it were still there */
+    align-items: center; /* For centering text if it were still there */
+    justify-content: center; /* For centering text if it were still there */
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
