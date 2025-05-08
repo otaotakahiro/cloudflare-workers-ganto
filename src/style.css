@@ -3,6 +3,7 @@ body {
     margin: 20px;
     background-color: #f4f7f6;
     color: #333;
+    font-size: 0.8em; /* 全体のフォントサイズを80%に */
 }
 
 h1 {
@@ -142,9 +143,10 @@ h1 {
     padding: 10px;
     box-sizing: border-box;
     border-right: 1px solid #eee;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    /* white-space: nowrap; */ /* 折り返しを許可 */
+    /* overflow: hidden; */ /* 折り返しのため削除 */
+    /* text-overflow: ellipsis; */ /* 折り返しのため削除 */
+    word-break: break-word; /* 必要に応じて単語の途中でも改行 */
 }
 
 .gantt-task-assignee-cell {
@@ -152,9 +154,10 @@ h1 {
     padding: 10px;
     box-sizing: border-box;
     border-right: 1px solid #eee; /* Memoセルとの境界線を追加 */
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    /* white-space: nowrap; */ /* 折り返しを許可 */
+    /* overflow: hidden; */ /* 折り返しのため削除 */
+    /* text-overflow: ellipsis; */ /* 折り返しのため削除 */
+    word-break: break-word;
 }
 
 /* Memoセル用のスタイルを追加 */
@@ -162,9 +165,10 @@ h1 {
     width: 30%; /* Matches header */
     padding: 10px;
     box-sizing: border-box;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    /* white-space: nowrap; */ /* 折り返しを許可 */
+    /* overflow: hidden; */ /* 折り返しのため削除 */
+    /* text-overflow: ellipsis; */ /* 折り返しのため削除 */
+    word-break: break-word;
     cursor: pointer; /* クリック可能であることを示すカーソル */
 }
 
@@ -177,11 +181,11 @@ h1 {
     display: inline-block;
     box-sizing: border-box;
     text-align: center;
-    font-size: 0.8em;
+    /* font-size: 0.8em; */ /* 親から継承するため個別の指定は不要かも */
     border-right: 1px solid #2980b9;
-    min-width: 35px;
-    height: 100%; /* Fill the height of .gantt-timeline-header */
-    padding: 10px 4px; /* Consistent padding with other headers */
+    min-width: 45px; /* 月/日 表示のため少し広げる */
+    height: 100%;
+    padding: 10px 4px;
     color: white;
 }
 

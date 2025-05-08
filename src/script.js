@@ -150,16 +150,22 @@ function getDisplayParameters(tasks, viewMode) {
 
 function renderTimelineHeader(startDate, totalUnits, viewMode) {
     if (viewMode === 'daily') {
+        let previousMonth = -1; // 前のセルの月を記憶 (初期値はありえない月)
         for (let i = 0; i < totalUnits; i++) {
             const currentDate = new Date(startDate);
             currentDate.setDate(startDate.getDate() + i);
             const dayCell = document.createElement('div');
             dayCell.className = 'timeline-day-cell';
-            dayCell.textContent = `${currentDate.getDate()}`;
-            if (currentDate.getDate() === 1 || i === 0) {
-                dayCell.innerHTML = `<div>${currentDate.getMonth() + 1}/${currentDate.getDate()}</div>`;
+
+            // 常に「月/日」形式で表示
+            dayCell.textContent = `${currentDate.getMonth() + 1}/${currentDate.getDate()}`;
+
+            // 月の変わり目、または最初のセルであれば太字にする
+            if (currentDate.getMonth() !== previousMonth || i === 0) {
                 dayCell.style.fontWeight = 'bold';
             }
+            previousMonth = currentDate.getMonth();
+
             timelineHeaderContainer.appendChild(dayCell);
         }
     }
