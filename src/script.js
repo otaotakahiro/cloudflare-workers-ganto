@@ -226,59 +226,47 @@ function renderTaskInfoRows(tasks) {
 
 function renderTaskTimelineRows(tasks, timelineStartDate, totalUnitsInView, viewMode) {
     tasks.forEach(task => {
-        // Debugging for specific task
         if (task.id === 'TASK-003') { // 3社MTGのID
-            console.log('Debugging TASK-003 (3社MTG):');
+            console.log('Debugging TASK-003 (3社MTG) - renderTaskTimelineRows - Before calc:');
             console.log('  task.start (string):', task.start);
             console.log('  task.end (string):', task.end);
-            const taskStartUTCForDebug = new Date(task.start + 'T00:00:00Z');
-            const taskEndUTCForDebug = new Date(task.end + 'T00:00:00Z');
-            console.log('  taskStartDateUTC (Date obj):', taskStartUTCForDebug);
-            console.log('  taskEndDateUTC (Date obj):', taskEndUTCForDebug);
-            const timelineStartUTCForDebug = new Date(timelineStartDate.getFullYear(), timelineStartDate.getMonth(), timelineStartDate.getDate(), 0,0,0,0);
-            const normalizedTimelineStartForDebug = new Date(timelineStartUTCForDebug.toISOString().substring(0,10) + 'T00:00:00Z');
             console.log('  timelineStartDate (from params):', timelineStartDate);
-            console.log('  normalizedTimelineStart (Date obj):', normalizedTimelineStartForDebug);
-
-            let debugOffset = (taskStartUTCForDebug.getTime() - normalizedTimelineStartForDebug.getTime()) / (1000 * 60 * 60 * 24);
-            let debugDuration = (taskEndUTCForDebug.getTime() - taskStartUTCForDebug.getTime()) / (1000 * 60 * 60 * 24) + 1;
-            console.log('  CALCULATED offsetUnits (raw):', debugOffset);
-            console.log('  CALCULATED durationUnits (raw):', debugDuration);
-            console.log('  CALCULATED offsetUnits (rounded):', Math.round(debugOffset));
-            console.log('  CALCULATED durationUnits (rounded & max 1):', Math.max(1, Math.round(debugDuration)));
         }
-
-        const taskTimelineRow = document.createElement('div');
-        taskTimelineRow.className = 'gantt-task-row-timeline'; // New class from CSS
 
         let offsetUnits = 0;
         let durationUnits = 0;
 
-        // Convert string dates from task object to Date objects, treating them as UTC
-        // to avoid timezone offsets when only date is relevant.
-        const taskStartStr = task.start;
-        const taskEndStr = task.end;
+        // Convert string dates from task object to Date objects, using local timezone's midnight.
+        const taskStartParts = task.start.split('-').map(Number); // [YYYY, MM, DD]
+        const taskEndParts = task.end.split('-').map(Number);     // [YYYY, MM, DD]
 
-        const taskStartDateUTC = new Date(taskStartStr + 'T00:00:00Z');
-        const taskEndDateUTC = new Date(taskEndStr + 'T00:00:00Z');
+        // Note: JavaScript's Date month is 0-indexed (0 for January, 11 for December)
+        const taskStartDateLocal = new Date(taskStartParts[0], taskStartParts[1] - 1, taskStartParts[2]);
+        const taskEndDateLocal = new Date(taskEndParts[0], taskEndParts[1] - 1, taskEndParts[2]);
 
-        // Also treat timelineStartDate as UTC for consistent comparison
-        const timelineStartDateUTC = new Date(timelineStartDate.getFullYear(), timelineStartDate.getMonth(), timelineStartDate.getDate(), 0, 0, 0, 0);
-        // Convert timelineStartDate to a Z মানে UTC string, then back to Date to clear any local TZ component effectively
-        const normalizedTimelineStart = new Date(timelineStartDateUTC.toISOString().substring(0,10) + 'T00:00:00Z');
+        // timelineStartDate is already a Date object, ensure it's at local midnight for comparison
+        const normalizedTimelineStartLocal = new Date(timelineStartDate.getFullYear(), timelineStartDate.getMonth(), timelineStartDate.getDate());
+
+        if (task.id === 'TASK-003') {
+            console.log('  taskStartDateLocal (Date obj):', taskStartDateLocal);
+            console.log('  normalizedTimelineStartLocal (Date obj):', normalizedTimelineStartLocal);
+        }
 
         switch (viewMode) {
             case 'daily':
             default:
-                // Calculate difference in days (UTC)
-                offsetUnits = (taskStartDateUTC.getTime() - normalizedTimelineStart.getTime()) / (1000 * 60 * 60 * 24);
-                durationUnits = (taskEndDateUTC.getTime() - taskStartDateUTC.getTime()) / (1000 * 60 * 60 * 24) + 1;
+                offsetUnits = (taskStartDateLocal.getTime() - normalizedTimelineStartLocal.getTime()) / (1000 * 60 * 60 * 24);
+                durationUnits = (taskEndDateLocal.getTime() - taskStartDateLocal.getTime()) / (1000 * 60 * 60 * 24) + 1;
                 break;
         }
 
-        // Round to nearest integer for offset and duration, ensure duration is at least 1
         offsetUnits = Math.round(offsetUnits);
         durationUnits = Math.max(1, Math.round(durationUnits));
+
+        if (task.id === 'TASK-003') {
+            console.log('  CALCULATED offsetUnits (final):', offsetUnits);
+            console.log('  CALCULATED durationUnits (final):', durationUnits);
+        }
 
         const taskBar = document.createElement('div');
         taskBar.className = 'gantt-task-bar';
