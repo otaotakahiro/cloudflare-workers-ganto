@@ -7,12 +7,29 @@ let currentViewMode = 'daily'; // 'daily', 'weekly', 'monthly'
 let taskInfoAreaContainer;
 let timelineHeaderContainer;
 let timelineBarAreaContainer;
+let memoModal;
+let memoTextarea;
+let memoSaveBtn;
+let memoDeleteBtn;
+let memoCancelBtn;
+
+let currentlyEditingTaskId = null; // 現在編集中のタスクIDを保持
 
 async function initializeGantt() {
     // Initialize container references after DOM is loaded
     taskInfoAreaContainer = document.getElementById('gantt-task-info-area');
     timelineHeaderContainer = document.querySelector('.gantt-timeline-header'); // Class selector for this one
     timelineBarAreaContainer = document.getElementById('gantt-timeline-bar-area');
+    memoModal = document.getElementById('memo-edit-modal');
+    memoTextarea = document.getElementById('memo-textarea');
+    memoSaveBtn = document.getElementById('memo-save-btn');
+    memoDeleteBtn = document.getElementById('memo-delete-btn');
+    memoCancelBtn = document.getElementById('memo-cancel-btn');
+
+    // Add event listeners for modal buttons
+    memoSaveBtn.addEventListener('click', handleSaveMemo);
+    memoDeleteBtn.addEventListener('click', handleDeleteMemo);
+    memoCancelBtn.addEventListener('click', closeMemoModal);
 
     try {
         const response = await fetch('project_data.json');
@@ -151,26 +168,26 @@ function renderTimelineHeader(startDate, totalUnits, viewMode) {
 function renderTaskInfoRows(tasks) {
     tasks.forEach(task => {
         const taskInfoRow = document.createElement('div');
-        taskInfoRow.className = 'gantt-task-row-info'; // New class from CSS
+        taskInfoRow.className = 'gantt-task-row-info';
 
         const taskNameCell = document.createElement('div');
-        taskNameCell.className = 'gantt-task-name-cell'; // New class from CSS
+        taskNameCell.className = 'gantt-task-name-cell';
         taskNameCell.textContent = task.name;
         taskNameCell.title = task.name;
         taskInfoRow.appendChild(taskNameCell);
 
         const taskAssigneeCell = document.createElement('div');
-        taskAssigneeCell.className = 'gantt-task-assignee-cell'; // New class from CSS
+        taskAssigneeCell.className = 'gantt-task-assignee-cell';
         taskAssigneeCell.textContent = task.assignee || '-';
         taskAssigneeCell.title = task.assignee || '-';
         taskInfoRow.appendChild(taskAssigneeCell);
 
-        // Memoセルを追加
         const taskMemoCell = document.createElement('div');
-        taskMemoCell.className = 'gantt-task-memo-cell'; // New class from CSS
-        taskMemoCell.textContent = task.memo || '-'; // project_data.json に memo があれば表示、なければ '-'
+        taskMemoCell.className = 'gantt-task-memo-cell';
+        taskMemoCell.textContent = task.memo || '-';
         taskMemoCell.title = task.memo || 'クリックしてメモを編集';
-        // あとでクリックイベントを追加する
+        taskMemoCell.dataset.taskId = task.id; // taskIdをdata属性として保持
+        taskMemoCell.addEventListener('click', () => openMemoModal(task.id));
         taskInfoRow.appendChild(taskMemoCell);
 
         taskInfoAreaContainer.appendChild(taskInfoRow);
@@ -217,6 +234,60 @@ function renderTaskTimelineRows(tasks, timelineStartDate, totalUnitsInView, view
         taskTimelineRow.appendChild(taskBar);
         timelineBarAreaContainer.appendChild(taskTimelineRow);
     });
+}
+
+// Memo Modal Functions
+function openMemoModal(taskId) {
+    currentlyEditingTaskId = taskId;
+    const task = allTasks.find(t => t.id === taskId);
+    memoTextarea.value = task?.memo || '';
+    memoModal.style.display = 'flex'; // CSSでflexを使って中央揃えしているため
+}
+
+function closeMemoModal() {
+    memoModal.style.display = 'none';
+    currentlyEditingTaskId = null;
+    memoTextarea.value = ''; // テキストエリアをクリア
+}
+
+function handleSaveMemo() {
+    if (!currentlyEditingTaskId) return;
+
+    const task = allTasks.find(t => t.id === currentlyEditingTaskId);
+    if (task) {
+        task.memo = memoTextarea.value.trim();
+        // UI上のMemoセルを更新
+        const memoCell = taskInfoAreaContainer.querySelector(`.gantt-task-memo-cell[data-task-id="${currentlyEditingTaskId}"]`);
+        if (memoCell) {
+            memoCell.textContent = task.memo || '-';
+            memoCell.title = task.memo || 'クリックしてメモを編集';
+        }
+        // TODO: ここでproject_data.jsonを更新し、将来的にはAPI経由でサーバーに保存する
+        console.log('Memo saved for task:', currentlyEditingTaskId, 'New memo:', task.memo);
+        // project_data.jsonの内容をローカルで更新する例（ただし、これは永続化しない）
+        // 実際の永続化はgit push & deployか、API経由で行う
+    }
+    closeMemoModal();
+}
+
+function handleDeleteMemo() {
+    if (!currentlyEditingTaskId) return;
+
+    if (confirm('本当にこのメモを削除しますか？')) {
+        const task = allTasks.find(t => t.id === currentlyEditingTaskId);
+        if (task) {
+            task.memo = ''; // メモを空にする
+            // UI上のMemoセルを更新
+            const memoCell = taskInfoAreaContainer.querySelector(`.gantt-task-memo-cell[data-task-id="${currentlyEditingTaskId}"]`);
+            if (memoCell) {
+                memoCell.textContent = '-';
+                memoCell.title = 'クリックしてメモを編集';
+            }
+            // TODO: ここでproject_data.jsonを更新し、将来的にはAPI経由でサーバーに保存する
+            console.log('Memo deleted for task:', currentlyEditingTaskId);
+        }
+        closeMemoModal();
+    }
 }
 
 // Helper function to get week number (example)
