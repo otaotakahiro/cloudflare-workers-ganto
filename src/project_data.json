@@ -1,0 +1,115 @@
+[
+  {
+    "id": "TASK-001",
+    "name": "申込書・契約書発行",
+    "assignee": "TeN",
+    "start": "2025-03-03",
+    "end": "2025-03-03",
+    "progress": 0
+  },
+  {
+    "id": "TASK-002",
+    "name": "申込書・契約書確認",
+    "assignee": "ビューティーゲート様",
+    "start": "2025-03-03",
+    "end": "2025-03-07",
+    "progress": 0
+  },
+  {
+    "id": "TASK-003",
+    "name": "3社MTG",
+    "assignee": "3社",
+    "start": null,
+    "end": null,
+    "dependency": "TASK-009",
+    "progress": 0
+  },
+  {
+    "id": "TASK-004",
+    "name": "請求書発行",
+    "assignee": "TeN",
+    "start": "2025-03-07",
+    "end": "2025-03-07",
+    "progress": 0
+  },
+  {
+    "id": "TASK-005",
+    "name": "お支払い",
+    "assignee": "ビューティーゲート様",
+    "start": "2025-04-30",
+    "end": "2025-04-30",
+    "progress": 0
+  },
+  {
+    "id": "TASK-006",
+    "name": "計画書準備",
+    "assignee": "ビューティーゲート様",
+    "start": "2025-03-03",
+    "end": "2025-03-31",
+    "progress": 0
+  },
+  {
+    "id": "TASK-007",
+    "name": "計画書作成・発送",
+    "assignee": "社労士",
+    "start": "2025-04-01",
+    "end": "2025-04-21",
+    "progress": 0
+  },
+  {
+    "id": "TASK-008",
+    "name": "計画書確認",
+    "assignee": "国",
+    "start": "2025-04-21",
+    "end": "2025-05-21",
+    "progress": 0
+  },
+  {
+    "id": "TASK-009",
+    "name": "アカウント発行",
+    "assignee": "TeN",
+    "start": "2025-05-21",
+    "end": "2025-05-31",
+    "progress": 0
+  },
+  {
+    "id": "TASK-010",
+    "name": "受講",
+    "assignee": "ビューティーゲート様",
+    "start": "2025-06-01",
+    "end": "2025-07-15",
+    "progress": 0
+  },
+  {
+    "id": "TASK-011",
+    "name": "修了証等発行",
+    "assignee": "TeN",
+    "start": "2025-07-16",
+    "end": "2025-07-18",
+    "progress": 0
+  },
+  {
+    "id": "TASK-012",
+    "name": "レポート・振込証明書等準備",
+    "assignee": "ビューティーゲート様",
+    "start": "2025-07-16",
+    "end": "2025-07-31",
+    "progress": 0
+  },
+  {
+    "id": "TASK-013",
+    "name": "書類作成・提出",
+    "assignee": "社労士",
+    "start": "2025-08-01",
+    "end": "2025-08-31",
+    "progress": 0
+  },
+  {
+    "id": "TASK-014",
+    "name": "審査・支給通知",
+    "assignee": "国",
+    "start": "2025-09-01",
+    "end": "2026-03-01",
+    "progress": 0
+  }
+]

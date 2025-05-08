@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AIガントチャートツール</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h1>プロジェクトガントチャート</h1>
+
+    <div class="view-switcher">
+        <button id="view-daily">日表示</button>
+        <button id="view-weekly">週表示</button>
+        <button id="view-monthly">月表示</button>
+    </div>
+
+    <div class="gantt-main-container">
+        <div class="gantt-fixed-left">
+            <div class="gantt-header-fixed">
+                <div class="gantt-header-name">タスク名</div>
+                <div class="gantt-header-assignee">担当者</div>
+            </div>
+            <div id="gantt-task-info-area" class="gantt-task-info-area">
+                <!-- タスク名と担当者はここにJSで描画されます -->
+            </div>
+        </div>
+        <div class="gantt-scrollable-right">
+            <div class="gantt-timeline-header">
+                <!-- タイムラインヘッダー(日付など)はここにJSで描画されます -->
+            </div>
+            <div id="gantt-timeline-bar-area" class="gantt-timeline-bar-area">
+                <!-- タスクバーはここにJSで描画されます -->
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

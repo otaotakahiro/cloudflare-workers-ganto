@@ -1,0 +1,34 @@
+{
+    "context": [
+        {
+            "identifier": "project_requirements",
+            "path": "project_ai_gantt_tool_requirements.yaml",
+            "type": "file",
+            "editable": false
+        },
+        {
+            "identifier": "source_code",
+            "path": "src",
+            "type": "directory",
+            "editable": true
+        },
+        {
+            "identifier": "project_specific_rules",
+            "path": "project_rules",
+            "type": "directory",
+            "glob": "**/*.mdc",
+            "editable": true
+        }
+    ],
+    "instructions": {
+        "custom": [
+            "Always respond in japanese",
+            "The base programming language for this project is JavaScript.",
+            "When generating code, prioritize clarity and maintainability.",
+            "Refer to the project_ai_gantt_tool_requirements.yaml for overall feature specifications and technical details.",
+            "Refer to .mdc files within the 'project_rules' directory for specific, up-to-date project rules and guidelines.",
+            "Ensure that frontend code (HTML, CSS, JavaScript) is clean and follows modern best practices.",
+            "For backend development, consider the Cloudflare Workers environment and its limitations/features (e.g., using Hono for routing, D1 for database, KV for storage)."
+        ]
+    }
+}

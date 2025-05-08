@@ -1,0 +1,53 @@
+---
+description:
+globs:
+alwaysApply: false
+---
+# コーディング規約
+
+## 1. 全般
+
+- **言語**: JavaScript (ES6+を推奨)
+- **文字コード**: UTF-8
+- **改行コード**: LF
+
+## 2. フォーマット
+
+- **インデント**: 半角スペース4つ
+- **1行の最大文字数**: 120文字 (可読性を損なわない範囲で柔軟に対応)
+- **セミコロン**: 行末にはセミコロンを必ずつける
+- **クォーテーション**: 文字列リテラルはシングルクォート (`'`) を優先する。ただし、JSONやHTML属性など、ダブルクォートが適切な場合はそちらを使用する。
+
+## 3. 命名規則
+
+- **変数・関数**: camelCase (例: `myVariable`, `calculateValue`)
+- **クラス・コンストラクタ**: PascalCase (例: `MyClass`, `ProjectManager`)
+- **定数**: UPPER_SNAKE_CASE (例: `MAX_USERS`, `API_KEY`)
+- **ファイル名**:
+    - JavaScriptファイル: camelCase (例: `utilityFunctions.js`, `ganttChartRenderer.js`) または PascalCase (クラスファイルの場合: `MyClass.js`)
+    - HTML/CSS/MDCファイル: kebab-case (例: `index.html`, `main-styles.css`, `project-rules.mdc`)
+
+## 4. コメント
+
+- 複雑なロジックや、意図が分かりにくい箇所にはコメントを記述する。
+- TODOコメントは、具体的な作業内容と担当者（可能であれば）を明記する。(例: `// TODO: (TaroYamada) リファクタリングが必要`)
+- JSDoc形式でのコメントを推奨 (特に公開APIや主要な関数)。
+
+## 5. JavaScript特有の規約
+
+- `var` の使用は避け、`let` または `const` を使用する。
+- `const` を可能な限り使用し、再代入が不要な変数は不変にする。
+- アロー関数を積極的に活用する。
+- モジュールシステム (ES Modules: `import`/`export`) を使用する。
+- 非同期処理には `async/await` を優先的に使用する。
+
+## 6. その他
+
+- 未使用のコードや変数は残さない。
+- 冗長なコードは避け、DRY (Don't Repeat Yourself) の原則を意識する。
+- エラーハンドリングを適切に行う。
+
+---
+
+この規約は随時更新される可能性があります。
+不明な点や改善提案があれば、プロジェクトチームに共有してください。

@@ -1,0 +1,19 @@
+{
+  "name": "cloudflare-workers-ganto",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "tsx watch server/index.ts"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "@hono/node-server": "^1.14.1",
+    "hono": "^4.7.8",
+    "tsx": "^4.19.4",
+    "typescript": "^5.8.3"
+  }
+}

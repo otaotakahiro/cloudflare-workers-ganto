@@ -1,0 +1,214 @@
+body {
+    font-family: sans-serif;
+    margin: 20px;
+    background-color: #f4f7f6;
+    color: #333;
+}
+
+h1 {
+    text-align: center;
+    color: #2c3e50;
+}
+
+/* View Switcher Styles */
+.view-switcher {
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+.view-switcher button {
+    padding: 8px 15px;
+    margin: 0 5px;
+    border: 1px solid #3498db;
+    background-color: #fff;
+    color: #3498db;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.view-switcher button:hover {
+    background-color: #3498db;
+    color: #fff;
+}
+
+.view-switcher button.active {
+    background-color: #2980b9;
+    color: #fff;
+    border-color: #2980b9;
+}
+
+/* Main Gantt Layout */
+.gantt-main-container {
+    display: flex;
+    width: 100%;
+    max-width: 1200px; /* Adjust as needed, or use 100% for full width */
+    margin: 20px auto;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #fff;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    /* overflow: hidden; /* This might hide shadows or absolutely positioned elements if not careful */
+}
+
+.gantt-fixed-left {
+    width: 30%; /* Adjust as needed for Task Name + Assignee */
+    flex-shrink: 0; /* Prevent this column from shrinking */
+    border-right: 1px solid #ddd;
+    background-color: #fdfdfd; /* Slightly different background for fixed part */
+}
+
+.gantt-scrollable-right {
+    width: 70%; /* Remaining width */
+    overflow-x: auto; /* Enable horizontal scroll for the timeline part */
+    position: relative; /* For potential sticky header later */
+}
+
+/* Headers */
+.gantt-header-fixed {
+    display: flex;
+    background-color: #3498db;
+    color: white;
+    font-weight: bold;
+    border-bottom: 1px solid #2980b9;
+    position: sticky; /* Sticky header for the fixed left part */
+    top: 0;
+    z-index: 20;
+}
+
+.gantt-header-name {
+    width: 60%; /* Relative to .gantt-header-fixed */
+    padding: 10px;
+    box-sizing: border-box;
+    border-right: 1px solid #2980b9;
+}
+
+.gantt-header-assignee {
+    width: 40%; /* Relative to .gantt-header-fixed */
+    padding: 10px;
+    box-sizing: border-box;
+}
+
+.gantt-timeline-header {
+    background-color: #3498db;
+    /* padding: 0; /* Padding will be on individual cells */
+    color: white;
+    font-weight: bold;
+    border-bottom: 1px solid #2980b9;
+    white-space: nowrap; /* Critical for horizontal layout of day cells */
+    position: sticky; /* Sticky timeline header within the scrollable area */
+    top: 0;
+    z-index: 10; /* Below fixed-left header if they overlap due to page scroll */
+}
+
+/* Task Info and Timeline Bar Areas */
+.gantt-task-info-area {
+    /* Max height and overflow-y if needed, synchronized with timeline bar area */
+    /* For now, let content define height. Syncing height is tricky. */
+}
+
+.gantt-timeline-bar-area {
+    position: relative; /* For absolute positioning of task bars */
+     /* Background grid for timeline can be applied here if desired */
+}
+
+/* Row Structure (Conceptual - JS will create these parts) */
+.gantt-task-row-info {
+    display: flex;
+    border-bottom: 1px solid #eee;
+    /* height should be synced with .gantt-task-row-timeline */
+}
+
+.gantt-task-row-timeline {
+    border-bottom: 1px solid #eee;
+    position: relative; /* For task bar container */
+    /* height should be synced with .gantt-task-row-info */
+    min-height: 41px; /* Match typical row height with padding */
+}
+
+/* Individual Cells in Task Info Area */
+.gantt-task-name-cell {
+    width: 60%; /* Matches header */
+    padding: 10px;
+    box-sizing: border-box;
+    border-right: 1px solid #eee;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.gantt-task-assignee-cell {
+    width: 40%; /* Matches header */
+    padding: 10px;
+    box-sizing: border-box;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Timeline Day Cells */
+.timeline-day-cell {
+    display: inline-block;
+    box-sizing: border-box;
+    text-align: center;
+    font-size: 0.8em;
+    border-right: 1px solid #2980b9;
+    min-width: 35px;
+    height: 100%; /* Fill the height of .gantt-timeline-header */
+    padding: 10px 4px; /* Consistent padding with other headers */
+    color: white;
+}
+
+.timeline-day-cell:last-child {
+    border-right: none;
+}
+
+/* Task Bar Container (now effectively .gantt-task-row-timeline) */
+.gantt-task-bar-container {
+    /* This class might be repurposed or its styles merged into .gantt-task-row-timeline */
+    padding: 10px 5px; /* Padding for where bars are placed */
+    box-sizing: border-box;
+    /* background-image: ... (grid lines) ... ; can be applied to .gantt-timeline-bar-area */
+}
+
+/* Task Bar Styling */
+.gantt-task-bar {
+    position: absolute;
+    height: 20px;
+    background-color: #5dade2;
+    border-radius: 4px;
+    color: white;
+    font-size: 0.8em;
+    line-height: 20px;
+    text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    border: 1px solid #4a90e2;
+    z-index: 1; /* Above background grid, but below sticky headers */
+}
+
+.gantt-task-bar-text {
+    position: relative;
+    z-index: 1;
+    padding: 0 5px;
+    display: inline-block;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.gantt-task-progress-bar {
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.2);
+    border-radius: 3px;
+    z-index: 0;
+}
+
+.gantt-task-bar.tentative {
+    background-color: #f39c12;
+    opacity: 0.8;
+}
