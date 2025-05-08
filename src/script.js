@@ -179,7 +179,9 @@ function renderTaskInfoRows(tasks) {
         const taskNameCell = document.createElement('div');
         taskNameCell.className = 'gantt-task-name-cell';
         taskNameCell.textContent = task.name;
-        taskNameCell.title = task.name;
+        taskNameCell.title = task.name; // Initially show task name on hover
+        taskNameCell.dataset.taskId = task.id; // taskIdをdata属性として保持
+        taskNameCell.addEventListener('click', () => openMemoModal(task.id)); // タスク名クリックでメモ編集
         taskInfoRow.appendChild(taskNameCell);
 
         const taskAssigneeCell = document.createElement('div');
@@ -191,22 +193,14 @@ function renderTaskInfoRows(tasks) {
         // 開始日セルを追加
         const taskStartDateCell = document.createElement('div');
         taskStartDateCell.className = 'gantt-task-start-date-cell';
-        taskStartDateCell.textContent = task.start ? task.start : '-'; // YYYY-MM-DD形式のはず
+        taskStartDateCell.textContent = task.start ? formatDateToMMDD(task.start) : '-';
         taskInfoRow.appendChild(taskStartDateCell);
 
         // 終了日セルを追加
         const taskEndDateCell = document.createElement('div');
         taskEndDateCell.className = 'gantt-task-end-date-cell';
-        taskEndDateCell.textContent = task.end ? task.end : '-'; // YYYY-MM-DD形式のはず
+        taskEndDateCell.textContent = task.end ? formatDateToMMDD(task.end) : '-';
         taskInfoRow.appendChild(taskEndDateCell);
-
-        const taskMemoCell = document.createElement('div');
-        taskMemoCell.className = 'gantt-task-memo-cell';
-        taskMemoCell.textContent = task.memo || '-';
-        taskMemoCell.title = task.memo || 'クリックしてメモを編集';
-        taskMemoCell.dataset.taskId = task.id; // taskIdをdata属性として保持
-        taskMemoCell.addEventListener('click', () => openMemoModal(task.id));
-        taskInfoRow.appendChild(taskMemoCell);
 
         taskInfoAreaContainer.appendChild(taskInfoRow);
     });
@@ -274,16 +268,12 @@ function handleSaveMemo() {
     const task = allTasks.find(t => t.id === currentlyEditingTaskId);
     if (task) {
         task.memo = memoTextarea.value.trim();
-        // UI上のMemoセルを更新
-        const memoCell = taskInfoAreaContainer.querySelector(`.gantt-task-memo-cell[data-task-id="${currentlyEditingTaskId}"]`);
-        if (memoCell) {
-            memoCell.textContent = task.memo || '-';
-            memoCell.title = task.memo || 'クリックしてメモを編集';
+        // タスク名セルのtitleを更新してメモの存在を示す
+        const taskNameCell = taskInfoAreaContainer.querySelector(`.gantt-task-name-cell[data-task-id="${currentlyEditingTaskId}"]`);
+        if (taskNameCell) {
+            taskNameCell.title = task.memo ? `メモ: ${task.memo.substring(0,30)}...` : task.name;
         }
-        // TODO: ここでproject_data.jsonを更新し、将来的にはAPI経由でサーバーに保存する
         console.log('Memo saved for task:', currentlyEditingTaskId, 'New memo:', task.memo);
-        // project_data.jsonの内容をローカルで更新する例（ただし、これは永続化しない）
-        // 実際の永続化はgit push & deployか、API経由で行う
     }
     closeMemoModal();
 }
@@ -295,17 +285,28 @@ function handleDeleteMemo() {
         const task = allTasks.find(t => t.id === currentlyEditingTaskId);
         if (task) {
             task.memo = ''; // メモを空にする
-            // UI上のMemoセルを更新
-            const memoCell = taskInfoAreaContainer.querySelector(`.gantt-task-memo-cell[data-task-id="${currentlyEditingTaskId}"]`);
-            if (memoCell) {
-                memoCell.textContent = '-';
-                memoCell.title = 'クリックしてメモを編集';
+            // タスク名セルのtitleを元に戻す
+            const taskNameCell = taskInfoAreaContainer.querySelector(`.gantt-task-name-cell[data-task-id="${currentlyEditingTaskId}"]`);
+            if (taskNameCell) {
+                taskNameCell.title = task.name;
             }
-            // TODO: ここでproject_data.jsonを更新し、将来的にはAPI経由でサーバーに保存する
             console.log('Memo deleted for task:', currentlyEditingTaskId);
         }
         closeMemoModal();
     }
+}
+
+// Helper function to format date to MM/DD
+function formatDateToMMDD(dateString) {
+    if (!dateString) return '-';
+    const date = new Date(dateString);
+    // JSTで表示するため、UTCの日付文字列をJSTの日付オブジェクトとして解釈し直さないように注意
+    // `project_data.json` の日付が `YYYY-MM-DD` であれば、そのまま分割して月日を取得するのが安全
+    const parts = dateString.split('-');
+    if (parts.length === 3) {
+        return `${parseInt(parts[1], 10)}/${parseInt(parts[2], 10)}`;
+    }
+    return dateString; // フォーマットできない場合は元の文字列を返す
 }
 
 // Helper function to get week number (example)

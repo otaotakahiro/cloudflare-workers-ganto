@@ -54,7 +54,7 @@ h1 {
 }
 
 .gantt-fixed-left {
-    width: 55%; /* Adjust for Task Name, Assignee, Start Date, End Date, Memo */
+    width: 45%; /* Adjusted: Task Name, Assignee, Start, End (Memo removed) */
     flex-shrink: 0; /* Prevent this column from shrinking */
     border-right: 1px solid #ddd;
     background-color: #fdfdfd; /* Slightly different background for fixed part */
@@ -79,39 +79,33 @@ h1 {
 }
 
 .gantt-header-name {
-    width: 30%; /* Adjusted for new columns */
-    padding: 10px;
+    width: 40%; /* Adjusted */
+    padding: 5px; /* Reduced padding */
     box-sizing: border-box;
     border-right: 1px solid #2980b9;
 }
 
 .gantt-header-assignee {
-    width: 20%; /* Adjusted for new columns */
-    padding: 10px;
+    width: 25%; /* Adjusted */
+    padding: 5px; /* Reduced padding */
     box-sizing: border-box;
     border-right: 1px solid #2980b9;
 }
 
 /* 開始日ヘッダー用のスタイルを追加 */
 .gantt-header-start-date {
-    width: 15%; /* New column */
-    padding: 10px;
+    width: 17.5%; /* Adjusted */
+    padding: 5px; /* Reduced padding */
     box-sizing: border-box;
     border-right: 1px solid #2980b9;
 }
 
 /* 終了日ヘッダー用のスタイルを追加 */
 .gantt-header-end-date {
-    width: 15%; /* New column */
-    padding: 10px;
+    width: 17.5%; /* Adjusted */
+    padding: 5px; /* Reduced padding */
     box-sizing: border-box;
-    border-right: 1px solid #2980b9;
-}
-
-.gantt-header-memo {
-    width: 20%; /* Adjusted for new columns */
-    padding: 10px;
-    box-sizing: border-box;
+    /* No border-right needed if it's the last column in fixed-left */
 }
 
 .gantt-timeline-header {
@@ -155,59 +149,42 @@ h1 {
 
 /* Individual Cells in Task Info Area */
 .gantt-task-name-cell {
-    width: 30%; /* Matches header */
-    padding: 10px;
+    width: 40%; /* Matches header */
+    padding: 5px; /* Reduced padding */
     box-sizing: border-box;
     border-right: 1px solid #eee;
-    /* white-space: nowrap; */ /* 折り返しを許可 */
-    /* overflow: hidden; */ /* 折り返しのため削除 */
-    /* text-overflow: ellipsis; */ /* 折り返しのため削除 */
-    word-break: break-word; /* 必要に応じて単語の途中でも改行 */
+    word-break: break-word;
+    cursor: pointer; /* For memo functionality */
+}
+
+.gantt-task-name-cell:hover {
+    background-color: #f0f0f0; /* For memo functionality */
 }
 
 .gantt-task-assignee-cell {
-    width: 20%; /* Matches header */
-    padding: 10px;
+    width: 25%; /* Matches header */
+    padding: 5px; /* Reduced padding */
     box-sizing: border-box;
-    border-right: 1px solid #eee; /* Memoセルとの境界線を追加 */
-    /* white-space: nowrap; */ /* 折り返しを許可 */
-    /* overflow: hidden; */ /* 折り返しのため削除 */
-    /* text-overflow: ellipsis; */ /* 折り返しのため削除 */
+    border-right: 1px solid #eee;
     word-break: break-word;
 }
 
 /* 開始日セル用のスタイルを追加 */
 .gantt-task-start-date-cell {
-    width: 15%; /* Matches header */
-    padding: 10px;
+    width: 17.5%; /* Matches header */
+    padding: 5px; /* Reduced padding */
     box-sizing: border-box;
     border-right: 1px solid #eee;
-    word-break: break-word; /* In case date format is long or wraps */
+    word-break: break-word;
 }
 
 /* 終了日セル用のスタイルを追加 */
 .gantt-task-end-date-cell {
-    width: 15%; /* Matches header */
-    padding: 10px;
+    width: 17.5%; /* Matches header */
+    padding: 5px; /* Reduced padding */
     box-sizing: border-box;
-    border-right: 1px solid #eee;
-    word-break: break-word; /* In case date format is long or wraps */
-}
-
-/* Memoセル用のスタイルを追加 */
-.gantt-task-memo-cell {
-    width: 20%; /* Matches header */
-    padding: 10px;
-    box-sizing: border-box;
-    /* white-space: nowrap; */ /* 折り返しを許可 */
-    /* overflow: hidden; */ /* 折り返しのため削除 */
-    /* text-overflow: ellipsis; */ /* 折り返しのため削除 */
+    /* No border-right needed if it's the last column in fixed-left */
     word-break: break-word;
-    cursor: pointer; /* クリック可能であることを示すカーソル */
-}
-
-.gantt-task-memo-cell:hover {
-    background-color: #f0f0f0; /* ホバー時の背景色 */
 }
 
 /* Timeline Day Cells */
@@ -215,11 +192,10 @@ h1 {
     display: inline-block;
     box-sizing: border-box;
     text-align: center;
-    /* font-size: 0.8em; */ /* 親から継承するため個別の指定は不要かも */
     border-right: 1px solid #2980b9;
-    min-width: 45px; /* 月/日 表示のため少し広げる */
+    min-width: 40px; /* MM/DD 表示のため微調整 */
     height: 100%;
-    padding: 10px 4px;
+    padding: 5px 2px; /* Reduced padding */
     color: white;
 }
 
