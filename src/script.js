@@ -216,13 +216,20 @@ function renderTaskTimelineRows(tasks, timelineStartDate, totalUnitsInView, view
         let offsetUnits = 0;
         let durationUnits = 0;
 
+        // Ensure dates are compared at the start of the day (midnight)
+        const normalizedTimelineStart = new Date(timelineStartDate.getFullYear(), timelineStartDate.getMonth(), timelineStartDate.getDate());
+        const normalizedTaskStart = new Date(taskStartDate.getFullYear(), taskStartDate.getMonth(), taskStartDate.getDate());
+        const normalizedTaskEnd = new Date(taskEndDate.getFullYear(), taskEndDate.getMonth(), taskEndDate.getDate());
+
         switch (viewMode) {
             case 'daily':
             default:
-                offsetUnits = Math.ceil((taskStartDate - timelineStartDate) / (1000 * 60 * 60 * 24));
-                durationUnits = Math.ceil((taskEndDate - taskStartDate) / (1000 * 60 * 60 * 24)) + 1;
+                offsetUnits = Math.round((normalizedTaskStart - normalizedTimelineStart) / (1000 * 60 * 60 * 24));
+                // Duration: include the end date. If start and end are same, duration is 1 day.
+                durationUnits = Math.round((normalizedTaskEnd - normalizedTaskStart) / (1000 * 60 * 60 * 24)) + 1;
                 break;
         }
+        // Ensure duration is at least 1 if start and end are on the same day or if end is before start (data error)
         if (durationUnits <= 0) durationUnits = 1;
 
         const taskBar = document.createElement('div');

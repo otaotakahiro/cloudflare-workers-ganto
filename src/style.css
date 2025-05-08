@@ -79,31 +79,31 @@ h1 {
 }
 
 .gantt-header-name {
-    width: 40%; /* Adjusted */
-    padding: 5px; /* Reduced padding */
+    width: 40%;
+    padding: 2px 4px; /* Further reduced padding */
     box-sizing: border-box;
     border-right: 1px solid #2980b9;
 }
 
 .gantt-header-assignee {
-    width: 25%; /* Adjusted */
-    padding: 5px; /* Reduced padding */
+    width: 25%;
+    padding: 2px 4px; /* Further reduced padding */
     box-sizing: border-box;
     border-right: 1px solid #2980b9;
 }
 
 /* 開始日ヘッダー用のスタイルを追加 */
 .gantt-header-start-date {
-    width: 17.5%; /* Adjusted */
-    padding: 5px; /* Reduced padding */
+    width: 17.5%;
+    padding: 2px 4px; /* Further reduced padding */
     box-sizing: border-box;
     border-right: 1px solid #2980b9;
 }
 
 /* 終了日ヘッダー用のスタイルを追加 */
 .gantt-header-end-date {
-    width: 17.5%; /* Adjusted */
-    padding: 5px; /* Reduced padding */
+    width: 17.5%;
+    padding: 2px 4px; /* Further reduced padding */
     box-sizing: border-box;
     /* No border-right needed if it's the last column in fixed-left */
 }
@@ -141,16 +141,15 @@ h1 {
 .gantt-task-row-timeline {
     border-bottom: 1px solid #eee;
     position: relative; /* For task bar container */
-    /* height should be synced with .gantt-task-row-info */
-    min-height: 41px; /* Match typical row height with padding */
-    padding: 5px 0; /* Add some vertical padding for the bar */
+    min-height: 25px; /* Adjusted based on reduced padding in info cells */
+    /* padding: 5px 0; */ /* Removed vertical padding to make bar full height */
     box-sizing: border-box;
 }
 
 /* Individual Cells in Task Info Area */
 .gantt-task-name-cell {
-    width: 40%; /* Matches header */
-    padding: 5px; /* Reduced padding */
+    width: 40%;
+    padding: 2px 4px; /* Further reduced padding */
     box-sizing: border-box;
     border-right: 1px solid #eee;
     word-break: break-word;
@@ -162,8 +161,8 @@ h1 {
 }
 
 .gantt-task-assignee-cell {
-    width: 25%; /* Matches header */
-    padding: 5px; /* Reduced padding */
+    width: 25%;
+    padding: 2px 4px; /* Further reduced padding */
     box-sizing: border-box;
     border-right: 1px solid #eee;
     word-break: break-word;
@@ -171,8 +170,8 @@ h1 {
 
 /* 開始日セル用のスタイルを追加 */
 .gantt-task-start-date-cell {
-    width: 17.5%; /* Matches header */
-    padding: 5px; /* Reduced padding */
+    width: 17.5%;
+    padding: 2px 4px; /* Further reduced padding */
     box-sizing: border-box;
     border-right: 1px solid #eee;
     word-break: break-word;
@@ -180,8 +179,8 @@ h1 {
 
 /* 終了日セル用のスタイルを追加 */
 .gantt-task-end-date-cell {
-    width: 17.5%; /* Matches header */
-    padding: 5px; /* Reduced padding */
+    width: 17.5%;
+    padding: 2px 4px; /* Further reduced padding */
     box-sizing: border-box;
     /* No border-right needed if it's the last column in fixed-left */
     word-break: break-word;
@@ -193,9 +192,9 @@ h1 {
     box-sizing: border-box;
     text-align: center;
     border-right: 1px solid #2980b9;
-    min-width: 40px; /* MM/DD 表示のため微調整 */
+    min-width: 35px; /* Re-adjusted for MM/DD with smaller padding */
     height: 100%;
-    padding: 5px 2px; /* Reduced padding */
+    padding: 2px 1px; /* Further reduced padding */
     color: white;
 }
 
@@ -214,9 +213,9 @@ h1 {
 /* Task Bar Styling */
 .gantt-task-bar {
     position: absolute;
-    top: 5px; /* Align with padding-top of parent */
-    bottom: 5px; /* Align with padding-bottom of parent */
-    height: auto; /* Let top and bottom define height */
+    top: 0; /* Bar full height */
+    bottom: 0; /* Bar full height */
+    height: auto;
     background-color: #5dade2;
     color: white;
     font-size: 0.8em;
