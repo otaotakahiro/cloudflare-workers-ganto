@@ -9,11 +9,12 @@
     "outDir": "dist",
     "rootDir": ".",
     "jsx": "react-jsx",
-    "jsxImportSource": "hono/jsx"
+    "jsxImportSource": "hono/jsx",
+    "types": ["@cloudflare/workers-types"]
   },
   "include": [
     "server/**/*.ts",
-    "src/**/*.ts"
+    "functions/**/*.ts"
   ],
   "exclude": [
     "node_modules"

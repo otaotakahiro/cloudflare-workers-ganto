@@ -2,21 +2,22 @@ import { Hono } from 'hono';
 // import { serveStatic } from '@hono/node-server/serve-static'; // Removed for Cloudflare Workers
 // import { serve } from '@hono/node-server'; // Removed for Cloudflare Workers
 
-const app = new Hono().basePath('/api');
+const app = new Hono();
 
 // --- Static file serving needs reconsideration for Cloudflare Workers ---
 // Option 1: Serve from KV/R2 (Requires uploading files and modifying logic)
 // Option 2: Use Cloudflare Pages for static assets and Workers for API
 // Option 3: Bundle small assets into the worker script (using a bundler)
 
-// Example: Test route accessible at /api/test
-app.get('/test', (c) => {
-    return c.json({ message: 'API is working!' });
+// Example: Basic route for testing
+app.get('/', (c) => {
+  // Ideally, serve index.html here, but how depends on the chosen method above
+  // For now, just return a test message
+  return c.text('Hello Cloudflare Worker with Hono!');
 });
 
-// Example: API root accessible at /api/
-app.get('/', (c) => {
-    return c.text('Ganto API Root');
+app.get('/api/test', (c) => {
+    return c.json({ message: 'API is working!' });
 });
 
 // --- serveStatic lines removed or commented out ---

@@ -39,6 +39,7 @@ alwaysApply: false
 - **Cloudflare Workers** - サーバーレスコンピューティング環境
 - **Cloudflare KV** - キーバリューストレージ（使用している場合）
 - **Cloudflare D1** - SQLiteデータベース（使用している場合）
+- **Cloudflare Pages** - 静的サイトホスティング・Functions（選択肢）
 
 ## フォーム処理
 
@@ -57,13 +58,16 @@ alwaysApply: false
 
 ## 開発ツール
 
+- **Git** - バージョン管理システム
+- **Sourcetree** - Git GUI クライアント（推奨）
+- **Wrangler CLI** - Cloudflare 開発・デプロイツール
 - **ESLint** (v8.49.0) - コード品質管理
 - **Autoprefixer** (v10.4.15) - CSS ベンダープレフィックス自動付与
 - **PostCSS** (v8.4.30) - CSS トランスフォーメーション
 
 ## デプロイメント
 
-- Vercel プラットフォーム推奨
+- **Cloudflare** (Workers / Pages) プラットフォーム
 
 ## 特徴
 
