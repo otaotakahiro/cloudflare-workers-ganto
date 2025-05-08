@@ -59,29 +59,47 @@ async function initializeGantt() {
 }
 
 function preprocessTasks(tasks) {
+    console.log("Starting preprocessTasks...");
     tasks.forEach(task => {
+        if (task.id === 'TASK-003') {
+            console.log('Preprocessing TASK-003 (before):', JSON.parse(JSON.stringify(task)));
+        }
+
         if (task.start === null && task.dependency) {
             const dependentTask = tasks.find(t => t.id === task.dependency);
+            if (task.id === 'TASK-003') {
+                console.log('  TASK-003: Found dependentTask:', dependentTask ? JSON.parse(JSON.stringify(dependentTask)) : 'Not found');
+            }
             if (dependentTask && dependentTask.start) {
                 task.start = dependentTask.start;
                 const tempStartDate = new Date(dependentTask.start);
                 task.end = new Date(tempStartDate.setDate(tempStartDate.getDate() + 1)).toISOString().split('T')[0];
                 task.isTentative = true;
             } else {
-                const projectMinDate = new Date(Math.min(...tasks.filter(t => t.start).map(t => new Date(t.start))));
+                // 依存タスクがないか、依存タスクに開始日がない場合のフォールバック
+                if (task.id === 'TASK-003') console.log('  TASK-003: Fallback due to missing dependentTask.start');
+                const projectMinDateTask = tasks.filter(t => t.start).reduce((min, t) => new Date(t.start) < new Date(min.start) ? t : min, tasks.find(t => t.start)); // 最小開始日を持つタスクを検索
+                const projectMinDate = projectMinDateTask ? new Date(projectMinDateTask.start) : new Date(); // フォールバックのフォールバックで今日
                 task.start = projectMinDate.toISOString().split('T')[0];
                 const tempStartDate = new Date(task.start);
                 task.end = new Date(tempStartDate.setDate(tempStartDate.getDate() + 1)).toISOString().split('T')[0];
                 task.isTentative = true;
             }
         } else if (task.start === null) {
-            const projectMinDate = new Date(Math.min(...tasks.filter(t => t.start).map(t => new Date(t.start))));
+            // 依存関係がなく、開始日もない場合のフォールバック
+            if (task.id === 'TASK-003') console.log('  TASK-003: Fallback due to task.start is null and no dependency');
+            const projectMinDateTask = tasks.filter(t => t.start).reduce((min, t) => new Date(t.start) < new Date(min.start) ? t : min, tasks.find(t => t.start));
+            const projectMinDate = projectMinDateTask ? new Date(projectMinDateTask.start) : new Date();
             task.start = projectMinDate.toISOString().split('T')[0];
             const tempStartDate = new Date(task.start);
             task.end = new Date(tempStartDate.setDate(tempStartDate.getDate() + 1)).toISOString().split('T')[0];
             task.isTentative = true;
         }
+        if (task.id === 'TASK-003') {
+            console.log('Preprocessing TASK-003 (after):', JSON.parse(JSON.stringify(task)));
+        }
     });
+    console.log("Finished preprocessTasks.");
 }
 
 function setupViewSwitcher() {
@@ -208,6 +226,28 @@ function renderTaskInfoRows(tasks) {
 
 function renderTaskTimelineRows(tasks, timelineStartDate, totalUnitsInView, viewMode) {
     tasks.forEach(task => {
+        // Debugging for specific task
+        if (task.id === 'TASK-003') { // 3社MTGのID
+            console.log('Debugging TASK-003 (3社MTG):');
+            console.log('  task.start (string):', task.start);
+            console.log('  task.end (string):', task.end);
+            const taskStartUTCForDebug = new Date(task.start + 'T00:00:00Z');
+            const taskEndUTCForDebug = new Date(task.end + 'T00:00:00Z');
+            console.log('  taskStartDateUTC (Date obj):', taskStartUTCForDebug);
+            console.log('  taskEndDateUTC (Date obj):', taskEndUTCForDebug);
+            const timelineStartUTCForDebug = new Date(timelineStartDate.getFullYear(), timelineStartDate.getMonth(), timelineStartDate.getDate(), 0,0,0,0);
+            const normalizedTimelineStartForDebug = new Date(timelineStartUTCForDebug.toISOString().substring(0,10) + 'T00:00:00Z');
+            console.log('  timelineStartDate (from params):', timelineStartDate);
+            console.log('  normalizedTimelineStart (Date obj):', normalizedTimelineStartForDebug);
+
+            let debugOffset = (taskStartUTCForDebug.getTime() - normalizedTimelineStartForDebug.getTime()) / (1000 * 60 * 60 * 24);
+            let debugDuration = (taskEndUTCForDebug.getTime() - taskStartUTCForDebug.getTime()) / (1000 * 60 * 60 * 24) + 1;
+            console.log('  CALCULATED offsetUnits (raw):', debugOffset);
+            console.log('  CALCULATED durationUnits (raw):', debugDuration);
+            console.log('  CALCULATED offsetUnits (rounded):', Math.round(debugOffset));
+            console.log('  CALCULATED durationUnits (rounded & max 1):', Math.max(1, Math.round(debugDuration)));
+        }
+
         const taskTimelineRow = document.createElement('div');
         taskTimelineRow.className = 'gantt-task-row-timeline'; // New class from CSS
 
