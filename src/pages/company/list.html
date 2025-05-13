@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>プロジェクト一覧 - GANTOツール</title>
+  <link rel="stylesheet" href="/css/common.css">
+  <link rel="stylesheet" href="/css/pages/company/list.css">
+</head>
+<body>
+  <div class="container">
+    <div class="project-list-header">
+      <h1 class="page-title">プロジェクト一覧</h1>
+      <a href="/pages/gantt/create.html" class="btn btn-primary">新規プロジェクト作成</a>
+    </div>
+
+    <div class="filters">
+      <div class="search-box">
+        <input type="text" id="searchInput" class="form-input" placeholder="プロジェクト名で検索...">
+      </div>
+      <div class="filter-options">
+        <select id="statusFilter" class="form-input">
+          <option value="">すべてのステータス</option>
+          <option value="planning">計画中</option>
+          <option value="in_progress">進行中</option>
+          <option value="completed">完了</option>
+          <option value="on_hold">保留中</option>
+        </select>
+        <select id="sortBy" class="form-input">
+          <option value="created_at">作成日時</option>
+          <option value="updated_at">更新日時</option>
+          <option value="name">プロジェクト名</option>
+          <option value="status">ステータス</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="project-list" id="projectList">
+      <!-- プロジェクト一覧はJavaScriptで動的に生成 -->
+    </div>
+
+    <div class="pagination" id="pagination">
+      <!-- ページネーションはJavaScriptで動的に生成 -->
+    </div>
+  </div>
+
+  <script src="/js/common.js"></script>
+  <script src="/js/pages/company/list.js"></script>
+</body>
+</html>

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AIガントチャート生成 - 入力</title>
+  <link rel="stylesheet" href="/css/common.css">
+  <!-- <link rel="stylesheet" href="/css/touroku.css"> 必要であれば後で作成 -->
+</head>
+<body>
+  <div class="container">
+    <h1>AIガントチャート生成</h1>
+    <p>議事録や要件からガントチャートの草案を作成します。</p>
+
+    <div class="card">
+      <form id="ganttGenerateForm">
+        <div class="form-group">
+          <label for="projectTitle" class="form-label">プロジェクトタイトル</label>
+          <input type="text" id="projectTitle" name="projectTitle" class="form-input" required>
+        </div>
+
+        <div class="form-group">
+          <label for="meetingSummary" class="form-label">議事録・要件（要約）</label>
+          <textarea id="meetingSummary" name="meetingSummary" class="form-input" rows="10" required placeholder="タスク、担当者、期限などがわかるように記述してください。"></textarea>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="projectStartDate" class="form-label">プロジェクト開始日</label>
+            <input type="date" id="projectStartDate" name="projectStartDate" class="form-input" required>
+          </div>
+          <div class="form-group">
+            <label for="projectEndDate" class="form-label">プロジェクト終了期限</label>
+            <input type="date" id="projectEndDate" name="projectEndDate" class="form-input" required>
+          </div>
+        </div>
+
+        <div class="form-actions">
+          <button type="button" class="btn btn-secondary" onclick="window.location.href='/'">キャンセル</button>
+          <button type="submit" class="btn btn-primary" id="generateBtn">ガントチャート生成</button>
+        </div>
+      </form>
+      <div id="loadingIndicator" style="display: none; margin-top: 1rem; text-align: center;">
+        <p>AIがガントチャートを生成中です...</p>
+        <!-- ここにスピナーなどを追加しても良い -->
+      </div>
+      <div id="errorMessage" class="alert alert-error" style="display: none; margin-top: 1rem;">
+        <!-- エラーメッセージ表示用 -->
+      </div>
+    </div>
+
+  </div>
+
+  <script src="/js/common.js"></script>
+  <script src="/js/touroku.js"></script>
+</body>
+</html>

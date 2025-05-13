@@ -1,0 +1,13 @@
+{
+  "name": "ganto",
+  "compatibility_date": "2025-05-08",
+  "pages_build_output_dir": "src",
+  "kv_namespaces": [
+    {
+      "binding": "KV_GANTO_MOCKUP",
+      "id": "9e5fbd4fe636473e897ec44c78d3fc54",
+      "preview_id": "6838906737a84272b38a178e5a70e440"
+    }
+  ],
+  "vars": {}
+}

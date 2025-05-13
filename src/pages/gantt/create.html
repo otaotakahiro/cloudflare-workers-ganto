@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>新規プロジェクト作成 - GANTOツール</title>
+  <link rel="stylesheet" href="/css/common.css">
+  <link rel="stylesheet" href="/css/pages/gantt/create.css">
+</head>
+<body>
+  <div class="container">
+    <div class="create-project-container">
+      <h1 class="page-title">新規プロジェクト作成</h1>
+      <div class="card">
+        <form id="createProjectForm" class="create-project-form">
+          <div class="form-group">
+            <label for="projectName" class="form-label">プロジェクト名</label>
+            <input type="text" id="projectName" name="projectName" class="form-input" required>
+          </div>
+
+          <div class="form-group">
+            <label for="description" class="form-label">プロジェクト概要</label>
+            <textarea id="description" name="description" class="form-input" rows="4"></textarea>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="startDate" class="form-label">開始日</label>
+              <input type="date" id="startDate" name="startDate" class="form-input" required>
+            </div>
+            <div class="form-group">
+              <label for="endDate" class="form-label">終了日</label>
+              <input type="date" id="endDate" name="endDate" class="form-input" required>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="status" class="form-label">ステータス</label>
+            <select id="status" name="status" class="form-input" required>
+              <option value="planning">計画中</option>
+              <option value="in_progress">進行中</option>
+              <option value="on_hold">保留中</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="priority" class="form-label">優先度</label>
+            <select id="priority" name="priority" class="form-input" required>
+              <option value="low">低</option>
+              <option value="medium">中</option>
+              <option value="high">高</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">メンバー</label>
+            <div class="member-list" id="memberList">
+              <!-- メンバーリストはJavaScriptで動的に生成 -->
+            </div>
+            <button type="button" class="btn btn-secondary" id="addMemberBtn">メンバーを追加</button>
+          </div>
+
+          <div class="form-actions">
+            <button type="button" class="btn btn-secondary" onclick="history.back()">キャンセル</button>
+            <button type="submit" class="btn btn-primary">プロジェクトを作成</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- メンバー追加モーダル -->
+  <div class="modal" id="addMemberModal">
+    <div class="modal-content">
+      <h2>メンバーを追加</h2>
+      <div class="form-group">
+        <label for="memberEmail" class="form-label">メールアドレス</label>
+        <input type="email" id="memberEmail" class="form-input" required>
+      </div>
+      <div class="form-group">
+        <label for="memberRole" class="form-label">役割</label>
+        <select id="memberRole" class="form-input" required>
+          <option value="member">メンバー</option>
+          <option value="manager">マネージャー</option>
+          <option value="viewer">閲覧者</option>
+        </select>
+      </div>
+      <div class="modal-actions">
+        <button type="button" class="btn btn-secondary" id="cancelAddMember">キャンセル</button>
+        <button type="button" class="btn btn-primary" id="confirmAddMember">追加</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="/js/common.js"></script>
+  <script src="/js/pages/gantt/create.js"></script>
+</body>
+</html>

@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>会社登録 - GANTOツール</title>
+  <link rel="stylesheet" href="/css/common.css">
+  <link rel="stylesheet" href="/css/pages/company/register.css">
+</head>
+<body>
+  <div class="container">
+    <div class="register-container">
+      <h1 class="register-title">会社登録</h1>
+      <div class="card">
+        <form id="registerForm" class="register-form">
+          <div class="form-group">
+            <label for="companyName" class="form-label">会社名</label>
+            <input type="text" id="companyName" name="companyName" class="form-input" required>
+          </div>
+          <div class="form-group">
+            <label for="email" class="form-label">メールアドレス</label>
+            <input type="email" id="email" name="email" class="form-input" required>
+          </div>
+          <div class="form-group">
+            <label for="password" class="form-label">パスワード</label>
+            <input type="password" id="password" name="password" class="form-input" required>
+            <small class="form-text">8文字以上で、英数字を含めてください</small>
+          </div>
+          <div class="form-group">
+            <label for="passwordConfirm" class="form-label">パスワード（確認）</label>
+            <input type="password" id="passwordConfirm" name="passwordConfirm" class="form-input" required>
+          </div>
+          <div class="form-group">
+            <label for="industry" class="form-label">業種</label>
+            <select id="industry" name="industry" class="form-input" required>
+              <option value="">選択してください</option>
+              <option value="IT">IT</option>
+              <option value="製造業">製造業</option>
+              <option value="建設業">建設業</option>
+              <option value="小売業">小売業</option>
+              <option value="サービス業">サービス業</option>
+              <option value="その他">その他</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="employeeCount" class="form-label">従業員数</label>
+            <select id="employeeCount" name="employeeCount" class="form-input" required>
+              <option value="">選択してください</option>
+              <option value="1-10">1-10人</option>
+              <option value="11-50">11-50人</option>
+              <option value="51-200">51-200人</option>
+              <option value="201-500">201-500人</option>
+              <option value="501-1000">501-1000人</option>
+              <option value="1001+">1001人以上</option>
+            </select>
+          </div>
+          <button type="submit" class="btn btn-primary btn-block">登録</button>
+        </form>
+        <div class="register-links">
+          <a href="/pages/login.html" class="nav-link">すでにアカウントをお持ちの方はこちら</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="/js/common.js"></script>
+  <script src="/js/pages/company/register.js"></script>
+</body>
+</html>

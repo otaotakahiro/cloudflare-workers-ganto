@@ -1,0 +1,48 @@
+.register-container {
+  max-width: 600px;
+  margin: 4rem auto;
+  text-align: center;
+}
+
+.register-title {
+  font-size: 2rem;
+  color: #2c3e50;
+  margin-bottom: 2rem;
+}
+
+.register-form {
+  text-align: left;
+}
+
+.form-text {
+  display: block;
+  margin-top: 0.25rem;
+  font-size: 0.875rem;
+  color: #666;
+}
+
+.btn-block {
+  width: 100%;
+  margin-top: 1.5rem;
+}
+
+.register-links {
+  margin-top: 1.5rem;
+  text-align: center;
+}
+
+.register-links .nav-link {
+  color: #3498db;
+  text-decoration: none;
+}
+
+.register-links .nav-link:hover {
+  text-decoration: underline;
+}
+
+@media (max-width: 768px) {
+  .register-container {
+    margin: 2rem auto;
+    padding: 0 1rem;
+  }
+}

@@ -1,0 +1,43 @@
+.login-container {
+  max-width: 400px;
+  margin: 4rem auto;
+  text-align: center;
+}
+
+.login-title {
+  font-size: 2rem;
+  color: #2c3e50;
+  margin-bottom: 2rem;
+}
+
+.login-form {
+  text-align: left;
+}
+
+.btn-block {
+  width: 100%;
+  margin-top: 1rem;
+}
+
+.login-links {
+  margin-top: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.login-links .nav-link {
+  color: #3498db;
+  text-decoration: none;
+}
+
+.login-links .nav-link:hover {
+  text-decoration: underline;
+}
+
+@media (max-width: 768px) {
+  .login-container {
+    margin: 2rem auto;
+    padding: 0 1rem;
+  }
+}

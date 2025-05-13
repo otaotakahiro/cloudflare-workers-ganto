@@ -1,33 +1,7 @@
 var __defProp = Object.defineProperty;
 var __name = (target, value) => __defProp(target, "name", { value, configurable: true });
 
-// .wrangler/tmp/bundle-xMTRyo/checked-fetch.js
-var urls = /* @__PURE__ */ new Set();
-function checkURL(request, init) {
-  const url = request instanceof URL ? request : new URL(
-    (typeof request === "string" ? new Request(request, init) : request).url
-  );
-  if (url.port && url.port !== "443" && url.protocol === "https:") {
-    if (!urls.has(url.toString())) {
-      urls.add(url.toString());
-      console.warn(
-        `WARNING: known issue with \`fetch()\` requests to custom HTTPS ports in published Workers:
- - ${url.toString()} - the custom port will be ignored when the Worker is published using the \`wrangler deploy\` command.
-`
-      );
-    }
-  }
-}
-__name(checkURL, "checkURL");
-globalThis.fetch = new Proxy(globalThis.fetch, {
-  apply(target, thisArg, argArray) {
-    const [request, init] = argArray;
-    checkURL(request, init);
-    return Reflect.apply(target, thisArg, argArray);
-  }
-});
-
-// node_modules/hono/dist/compose.js
+// ../node_modules/hono/dist/compose.js
 var compose = /* @__PURE__ */ __name((middleware, onError, onNotFound) => {
   return (context, next) => {
     let index = -1;
@@ -72,7 +46,7 @@ var compose = /* @__PURE__ */ __name((middleware, onError, onNotFound) => {
   };
 }, "compose");
 
-// node_modules/hono/dist/utils/body.js
+// ../node_modules/hono/dist/utils/body.js
 var parseBody = /* @__PURE__ */ __name(async (request, options = /* @__PURE__ */ Object.create(null)) => {
   const { all = false, dot = false } = options;
   const headers = request instanceof HonoRequest ? request.raw.headers : request.headers;
@@ -139,7 +113,7 @@ var handleParsingNestedValues = /* @__PURE__ */ __name((form, key, value) => {
   });
 }, "handleParsingNestedValues");
 
-// node_modules/hono/dist/utils/url.js
+// ../node_modules/hono/dist/utils/url.js
 var splitPath = /* @__PURE__ */ __name((path) => {
   const paths = path.split("/");
   if (paths[0] === "") {
@@ -154,9 +128,9 @@ var splitRoutingPath = /* @__PURE__ */ __name((routePath) => {
 }, "splitRoutingPath");
 var extractGroupsFromPath = /* @__PURE__ */ __name((path) => {
   const groups = [];
-  path = path.replace(/\{[^}]+\}/g, (match, index) => {
+  path = path.replace(/\{[^}]+\}/g, (match2, index) => {
     const mark = `@${index}`;
-    groups.push([mark, match]);
+    groups.push([mark, match2]);
     return mark;
   });
   return { groups, path };
@@ -178,14 +152,14 @@ var getPattern = /* @__PURE__ */ __name((label, next) => {
   if (label === "*") {
     return "*";
   }
-  const match = label.match(/^\:([^\{\}]+)(?:\{(.+)\})?$/);
-  if (match) {
+  const match2 = label.match(/^\:([^\{\}]+)(?:\{(.+)\})?$/);
+  if (match2) {
     const cacheKey = `${label}#${next}`;
     if (!patternCache[cacheKey]) {
-      if (match[2]) {
-        patternCache[cacheKey] = next && next[0] !== ":" && next[0] !== "*" ? [cacheKey, match[1], new RegExp(`^${match[2]}(?=/${next})`)] : [label, match[1], new RegExp(`^${match[2]}$`)];
+      if (match2[2]) {
+        patternCache[cacheKey] = next && next[0] !== ":" && next[0] !== "*" ? [cacheKey, match2[1], new RegExp(`^${match2[2]}(?=/${next})`)] : [label, match2[1], new RegExp(`^${match2[2]}$`)];
       } else {
-        patternCache[cacheKey] = [label, match[1], true];
+        patternCache[cacheKey] = [label, match2[1], true];
       }
     }
     return patternCache[cacheKey];
@@ -196,11 +170,11 @@ var tryDecode = /* @__PURE__ */ __name((str, decoder) => {
   try {
     return decoder(str);
   } catch {
-    return str.replace(/(?:%[0-9A-Fa-f]{2})+/g, (match) => {
+    return str.replace(/(?:%[0-9A-Fa-f]{2})+/g, (match2) => {
       try {
-        return decoder(match);
+        return decoder(match2);
       } catch {
-        return match;
+        return match2;
       }
     });
   }
@@ -338,7 +312,7 @@ var getQueryParams = /* @__PURE__ */ __name((url, key) => {
 }, "getQueryParams");
 var decodeURIComponent_ = decodeURIComponent;
 
-// node_modules/hono/dist/request.js
+// ../node_modules/hono/dist/request.js
 var tryDecodeURIComponent = /* @__PURE__ */ __name((str) => tryDecode(str, decodeURIComponent_), "tryDecodeURIComponent");
 var HonoRequest = class {
   static {
@@ -449,7 +423,7 @@ var HonoRequest = class {
   }
 };
 
-// node_modules/hono/dist/utils/html.js
+// ../node_modules/hono/dist/utils/html.js
 var HtmlEscapedCallbackPhase = {
   Stringify: 1,
   BeforeStream: 2,
@@ -491,7 +465,7 @@ var resolveCallback = /* @__PURE__ */ __name(async (str, phase, preserveCallback
   }
 }, "resolveCallback");
 
-// node_modules/hono/dist/context.js
+// ../node_modules/hono/dist/context.js
 var TEXT_PLAIN = "text/plain; charset=UTF-8";
 var setHeaders = /* @__PURE__ */ __name((headers, map = {}) => {
   for (const key of Object.keys(map)) {
@@ -735,7 +709,7 @@ var Context = class {
   }, "notFound");
 };
 
-// node_modules/hono/dist/router.js
+// ../node_modules/hono/dist/router.js
 var METHOD_NAME_ALL = "ALL";
 var METHOD_NAME_ALL_LOWERCASE = "all";
 var METHODS = ["get", "post", "put", "delete", "options", "patch"];
@@ -746,10 +720,10 @@ var UnsupportedPathError = class extends Error {
   }
 };
 
-// node_modules/hono/dist/utils/constants.js
+// ../node_modules/hono/dist/utils/constants.js
 var COMPOSED_HANDLER = "__COMPOSED_HANDLER";
 
-// node_modules/hono/dist/hono-base.js
+// ../node_modules/hono/dist/hono-base.js
 var notFoundHandler = /* @__PURE__ */ __name((c) => {
   return c.text("404 Not Found", 404);
 }, "notFoundHandler");
@@ -830,14 +804,14 @@ var Hono = class {
   }
   #notFoundHandler = notFoundHandler;
   errorHandler = errorHandler;
-  route(path, app2) {
+  route(path, app4) {
     const subApp = this.basePath(path);
-    app2.routes.map((r) => {
+    app4.routes.map((r) => {
       let handler;
-      if (app2.errorHandler === errorHandler) {
+      if (app4.errorHandler === errorHandler) {
         handler = r.handler;
       } else {
-        handler = /* @__PURE__ */ __name(async (c, next) => (await compose([], app2.errorHandler)(c, () => r.handler(c, next))).res, "handler");
+        handler = /* @__PURE__ */ __name(async (c, next) => (await compose([], app4.errorHandler)(c, () => r.handler(c, next))).res, "handler");
         handler[COMPOSED_HANDLER] = r.handler;
       }
       subApp.#addRoute(r.method, r.path, handler);
@@ -980,7 +954,7 @@ var Hono = class {
   }, "fire");
 };
 
-// node_modules/hono/dist/router/reg-exp-router/node.js
+// ../node_modules/hono/dist/router/reg-exp-router/node.js
 var LABEL_REG_EXP_STR = "[^/]+";
 var ONLY_WILDCARD_REG_EXP_STR = ".*";
 var TAIL_WILDCARD_REG_EXP_STR = "(?:|/.*)";
@@ -1089,7 +1063,7 @@ var Node = class {
   }
 };
 
-// node_modules/hono/dist/router/reg-exp-router/trie.js
+// ../node_modules/hono/dist/router/reg-exp-router/trie.js
 var Trie = class {
   static {
     __name(this, "Trie");
@@ -1148,7 +1122,7 @@ var Trie = class {
   }
 };
 
-// node_modules/hono/dist/router/reg-exp-router/router.js
+// ../node_modules/hono/dist/router/reg-exp-router/router.js
 var emptyParam = [];
 var nullMatcher = [/^$/, [], /* @__PURE__ */ Object.create(null)];
 var wildcardRegExpCache = /* @__PURE__ */ Object.create(null);
@@ -1165,13 +1139,13 @@ function clearWildcardRegExpCache() {
   wildcardRegExpCache = /* @__PURE__ */ Object.create(null);
 }
 __name(clearWildcardRegExpCache, "clearWildcardRegExpCache");
-function buildMatcherFromPreprocessedRoutes(routes) {
+function buildMatcherFromPreprocessedRoutes(routes2) {
   const trie = new Trie();
   const handlerData = [];
-  if (routes.length === 0) {
+  if (routes2.length === 0) {
     return nullMatcher;
   }
-  const routesWithStaticPathFlag = routes.map(
+  const routesWithStaticPathFlag = routes2.map(
     (route) => [!/\*|\/:/.test(route[0]), ...route]
   ).sort(
     ([isStaticA, pathA], [isStaticB, pathB]) => isStaticA ? 1 : isStaticB ? -1 : pathA.length - pathB.length
@@ -1248,13 +1222,13 @@ var RegExpRouter = class {
   }
   add(method, path, handler) {
     const middleware = this.#middleware;
-    const routes = this.#routes;
-    if (!middleware || !routes) {
+    const routes2 = this.#routes;
+    if (!middleware || !routes2) {
       throw new Error(MESSAGE_MATCHER_IS_ALREADY_BUILT);
     }
     if (!middleware[method]) {
       ;
-      [middleware, routes].forEach((handlerMap) => {
+      [middleware, routes2].forEach((handlerMap) => {
         handlerMap[method] = /* @__PURE__ */ Object.create(null);
         Object.keys(handlerMap[METHOD_NAME_ALL]).forEach((p) => {
           handlerMap[method][p] = [...handlerMap[METHOD_NAME_ALL][p]];
@@ -1281,10 +1255,10 @@ var RegExpRouter = class {
           });
         }
       });
-      Object.keys(routes).forEach((m) => {
+      Object.keys(routes2).forEach((m) => {
         if (method === METHOD_NAME_ALL || method === m) {
-          Object.keys(routes[m]).forEach(
-            (p) => re.test(p) && routes[m][p].push([handler, paramCount])
+          Object.keys(routes2[m]).forEach(
+            (p) => re.test(p) && routes2[m][p].push([handler, paramCount])
           );
         }
       });
@@ -1293,12 +1267,12 @@ var RegExpRouter = class {
     const paths = checkOptionalParameter(path) || [path];
     for (let i = 0, len = paths.length; i < len; i++) {
       const path2 = paths[i];
-      Object.keys(routes).forEach((m) => {
+      Object.keys(routes2).forEach((m) => {
         if (method === METHOD_NAME_ALL || method === m) {
-          routes[m][path2] ||= [
+          routes2[m][path2] ||= [
             ...findMiddleware(middleware[m], path2) || findMiddleware(middleware[METHOD_NAME_ALL], path2) || []
           ];
-          routes[m][path2].push([handler, paramCount - len + i + 1]);
+          routes2[m][path2].push([handler, paramCount - len + i + 1]);
         }
       });
     }
@@ -1312,12 +1286,12 @@ var RegExpRouter = class {
       if (staticMatch) {
         return staticMatch;
       }
-      const match = path2.match(matcher[0]);
-      if (!match) {
+      const match2 = path2.match(matcher[0]);
+      if (!match2) {
         return [[], emptyParam];
       }
-      const index = match.indexOf("", 1);
-      return [matcher[1][index], match];
+      const index = match2.indexOf("", 1);
+      return [matcher[1][index], match2];
     };
     return this.match(method, path);
   }
@@ -1330,15 +1304,15 @@ var RegExpRouter = class {
     return matchers;
   }
   #buildMatcher(method) {
-    const routes = [];
+    const routes2 = [];
     let hasOwnRoute = method === METHOD_NAME_ALL;
     [this.#middleware, this.#routes].forEach((r) => {
       const ownRoute = r[method] ? Object.keys(r[method]).map((path) => [path, r[method][path]]) : [];
       if (ownRoute.length !== 0) {
         hasOwnRoute ||= true;
-        routes.push(...ownRoute);
+        routes2.push(...ownRoute);
       } else if (method !== METHOD_NAME_ALL) {
-        routes.push(
+        routes2.push(
           ...Object.keys(r[METHOD_NAME_ALL]).map((path) => [path, r[METHOD_NAME_ALL][path]])
         );
       }
@@ -1346,12 +1320,12 @@ var RegExpRouter = class {
     if (!hasOwnRoute) {
       return null;
     } else {
-      return buildMatcherFromPreprocessedRoutes(routes);
+      return buildMatcherFromPreprocessedRoutes(routes2);
     }
   }
 };
 
-// node_modules/hono/dist/router/smart-router/router.js
+// ../node_modules/hono/dist/router/smart-router/router.js
 var SmartRouter = class {
   static {
     __name(this, "SmartRouter");
@@ -1373,15 +1347,15 @@ var SmartRouter = class {
       throw new Error("Fatal error");
     }
     const routers = this.#routers;
-    const routes = this.#routes;
+    const routes2 = this.#routes;
     const len = routers.length;
     let i = 0;
     let res;
     for (; i < len; i++) {
       const router = routers[i];
       try {
-        for (let i2 = 0, len2 = routes.length; i2 < len2; i2++) {
-          router.add(...routes[i2]);
+        for (let i2 = 0, len2 = routes2.length; i2 < len2; i2++) {
+          router.add(...routes2[i2]);
         }
         res = router.match(method, path);
       } catch (e) {
@@ -1409,7 +1383,7 @@ var SmartRouter = class {
   }
 };
 
-// node_modules/hono/dist/router/trie-router/node.js
+// ../node_modules/hono/dist/router/trie-router/node.js
 var emptyParams = /* @__PURE__ */ Object.create(null);
 var Node2 = class {
   static {
@@ -1572,7 +1546,7 @@ var Node2 = class {
   }
 };
 
-// node_modules/hono/dist/router/trie-router/router.js
+// ../node_modules/hono/dist/router/trie-router/router.js
 var TrieRouter = class {
   static {
     __name(this, "TrieRouter");
@@ -1597,7 +1571,7 @@ var TrieRouter = class {
   }
 };
 
-// node_modules/hono/dist/hono.js
+// ../node_modules/hono/dist/hono.js
 var Hono2 = class extends Hono {
   static {
     __name(this, "Hono");
@@ -1610,17 +1584,572 @@ var Hono2 = class extends Hono {
   }
 };
 
-// dist/server/index.js
-var app = new Hono2().basePath("/api");
-app.get("/test", (c) => {
+// api/auth/login.ts
+var app = new Hono2();
+app.post("/", async (c) => {
+  try {
+    const { email, password } = await c.req.json();
+    if (!email || !password) {
+      return c.json({ success: false, message: "Email and password are required" }, 400);
+    }
+    console.log("Login attempt:", email);
+    const isAdminLogin = email === "admin@ganto.example" && password === "password123";
+    const isUserLogin = email.endsWith("@company.example") && password === "password456";
+    if (isAdminLogin) {
+      console.log("Admin login successful");
+      const token = "dummy-admin-token-" + Math.random();
+      return c.json({
+        success: true,
+        message: "Admin login successful",
+        token,
+        user: { id: "admin-001", email, role: "admin" }
+      });
+    } else if (isUserLogin) {
+      console.log("User login successful");
+      const token = "dummy-user-token-" + Math.random();
+      return c.json({
+        success: true,
+        message: "Login successful",
+        token,
+        user: { id: "user-" + Math.random().toString(36).substring(7), email, role: "user" }
+        // ダミーユーザー情報
+      });
+    } else {
+      console.log("Login failed for:", email);
+      return c.json({ success: false, message: "Invalid email or password" }, 401);
+    }
+  } catch (error) {
+    console.error("Login API error:", error);
+    return c.json({ success: false, message: "An internal error occurred" }, 500);
+  }
+});
+var onRequestPost = /* @__PURE__ */ __name((context) => {
+  return app.fetch(context.request, context.env, context);
+}, "onRequestPost");
+
+// api/auth/register.ts
+var app2 = new Hono2();
+app2.post("/", async (c) => {
+  try {
+    const body = await c.req.json();
+    const { companyName, email, password, passwordConfirm, industry, employeeCount } = body;
+    if (!companyName || !email || !password || !passwordConfirm || !industry || !employeeCount) {
+      return c.json({ success: false, message: "All fields are required" }, 400);
+    }
+    if (password !== passwordConfirm) {
+      return c.json({ success: false, message: "Passwords do not match" }, 400);
+    }
+    if (password.length < 8) {
+      return c.json({ success: false, message: "Password must be at least 8 characters long" }, 400);
+    }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      return c.json({ success: false, message: "Invalid email format" }, 400);
+    }
+    console.log("Company registration attempt:", companyName, email);
+    if (email === "existing@company.example") {
+      return c.json({ success: false, message: "Email already exists" }, 409);
+    }
+    console.log("Company registration successful for:", companyName);
+    return c.json({ success: true, message: "Company registered successfully" }, 201);
+  } catch (error) {
+    console.error("Registration API error:", error);
+    if (error instanceof SyntaxError) {
+      return c.json({ success: false, message: "Invalid request body" }, 400);
+    }
+    return c.json({ success: false, message: "An internal error occurred" }, 500);
+  }
+});
+var onRequestPost2 = /* @__PURE__ */ __name((context) => {
+  return app2.fetch(context.request, context.env, context);
+}, "onRequestPost");
+
+// ../server/index.ts
+var app3 = new Hono2().basePath("/api");
+app3.get("/test", (c) => {
   return c.json({ message: "API is working!" });
 });
-app.get("/", (c) => {
+app3.get("/", (c) => {
   return c.text("Ganto API Root");
 });
-var server_default = app;
+var server_default = app3;
 
-// ../../../.nvm/versions/node/v23.11.0/lib/node_modules/wrangler/templates/middleware/middleware-ensure-req-body-drained.ts
+// api/[[path]].ts
+var onRequest = /* @__PURE__ */ __name((context) => {
+  return server_default.fetch(context.request, context.env, context);
+}, "onRequest");
+
+// ../.wrangler/tmp/pages-Xqo5IF/functionsRoutes-0.6439634014187727.mjs
+var routes = [
+  {
+    routePath: "/api/auth/login",
+    mountPath: "/api/auth",
+    method: "POST",
+    middlewares: [],
+    modules: [onRequestPost]
+  },
+  {
+    routePath: "/api/auth/register",
+    mountPath: "/api/auth",
+    method: "POST",
+    middlewares: [],
+    modules: [onRequestPost2]
+  },
+  {
+    routePath: "/api/:path*",
+    mountPath: "/api",
+    method: "",
+    middlewares: [],
+    modules: [onRequest]
+  }
+];
+
+// ../../../../.nvm/versions/node/v23.11.0/lib/node_modules/wrangler/node_modules/path-to-regexp/dist.es2015/index.js
+function lexer(str) {
+  var tokens = [];
+  var i = 0;
+  while (i < str.length) {
+    var char = str[i];
+    if (char === "*" || char === "+" || char === "?") {
+      tokens.push({ type: "MODIFIER", index: i, value: str[i++] });
+      continue;
+    }
+    if (char === "\\") {
+      tokens.push({ type: "ESCAPED_CHAR", index: i++, value: str[i++] });
+      continue;
+    }
+    if (char === "{") {
+      tokens.push({ type: "OPEN", index: i, value: str[i++] });
+      continue;
+    }
+    if (char === "}") {
+      tokens.push({ type: "CLOSE", index: i, value: str[i++] });
+      continue;
+    }
+    if (char === ":") {
+      var name = "";
+      var j = i + 1;
+      while (j < str.length) {
+        var code = str.charCodeAt(j);
+        if (
+          // `0-9`
+          code >= 48 && code <= 57 || // `A-Z`
+          code >= 65 && code <= 90 || // `a-z`
+          code >= 97 && code <= 122 || // `_`
+          code === 95
+        ) {
+          name += str[j++];
+          continue;
+        }
+        break;
+      }
+      if (!name)
+        throw new TypeError("Missing parameter name at ".concat(i));
+      tokens.push({ type: "NAME", index: i, value: name });
+      i = j;
+      continue;
+    }
+    if (char === "(") {
+      var count = 1;
+      var pattern = "";
+      var j = i + 1;
+      if (str[j] === "?") {
+        throw new TypeError('Pattern cannot start with "?" at '.concat(j));
+      }
+      while (j < str.length) {
+        if (str[j] === "\\") {
+          pattern += str[j++] + str[j++];
+          continue;
+        }
+        if (str[j] === ")") {
+          count--;
+          if (count === 0) {
+            j++;
+            break;
+          }
+        } else if (str[j] === "(") {
+          count++;
+          if (str[j + 1] !== "?") {
+            throw new TypeError("Capturing groups are not allowed at ".concat(j));
+          }
+        }
+        pattern += str[j++];
+      }
+      if (count)
+        throw new TypeError("Unbalanced pattern at ".concat(i));
+      if (!pattern)
+        throw new TypeError("Missing pattern at ".concat(i));
+      tokens.push({ type: "PATTERN", index: i, value: pattern });
+      i = j;
+      continue;
+    }
+    tokens.push({ type: "CHAR", index: i, value: str[i++] });
+  }
+  tokens.push({ type: "END", index: i, value: "" });
+  return tokens;
+}
+__name(lexer, "lexer");
+function parse(str, options) {
+  if (options === void 0) {
+    options = {};
+  }
+  var tokens = lexer(str);
+  var _a = options.prefixes, prefixes = _a === void 0 ? "./" : _a, _b = options.delimiter, delimiter = _b === void 0 ? "/#?" : _b;
+  var result = [];
+  var key = 0;
+  var i = 0;
+  var path = "";
+  var tryConsume = /* @__PURE__ */ __name(function(type) {
+    if (i < tokens.length && tokens[i].type === type)
+      return tokens[i++].value;
+  }, "tryConsume");
+  var mustConsume = /* @__PURE__ */ __name(function(type) {
+    var value2 = tryConsume(type);
+    if (value2 !== void 0)
+      return value2;
+    var _a2 = tokens[i], nextType = _a2.type, index = _a2.index;
+    throw new TypeError("Unexpected ".concat(nextType, " at ").concat(index, ", expected ").concat(type));
+  }, "mustConsume");
+  var consumeText = /* @__PURE__ */ __name(function() {
+    var result2 = "";
+    var value2;
+    while (value2 = tryConsume("CHAR") || tryConsume("ESCAPED_CHAR")) {
+      result2 += value2;
+    }
+    return result2;
+  }, "consumeText");
+  var isSafe = /* @__PURE__ */ __name(function(value2) {
+    for (var _i = 0, delimiter_1 = delimiter; _i < delimiter_1.length; _i++) {
+      var char2 = delimiter_1[_i];
+      if (value2.indexOf(char2) > -1)
+        return true;
+    }
+    return false;
+  }, "isSafe");
+  var safePattern = /* @__PURE__ */ __name(function(prefix2) {
+    var prev = result[result.length - 1];
+    var prevText = prefix2 || (prev && typeof prev === "string" ? prev : "");
+    if (prev && !prevText) {
+      throw new TypeError('Must have text between two parameters, missing text after "'.concat(prev.name, '"'));
+    }
+    if (!prevText || isSafe(prevText))
+      return "[^".concat(escapeString(delimiter), "]+?");
+    return "(?:(?!".concat(escapeString(prevText), ")[^").concat(escapeString(delimiter), "])+?");
+  }, "safePattern");
+  while (i < tokens.length) {
+    var char = tryConsume("CHAR");
+    var name = tryConsume("NAME");
+    var pattern = tryConsume("PATTERN");
+    if (name || pattern) {
+      var prefix = char || "";
+      if (prefixes.indexOf(prefix) === -1) {
+        path += prefix;
+        prefix = "";
+      }
+      if (path) {
+        result.push(path);
+        path = "";
+      }
+      result.push({
+        name: name || key++,
+        prefix,
+        suffix: "",
+        pattern: pattern || safePattern(prefix),
+        modifier: tryConsume("MODIFIER") || ""
+      });
+      continue;
+    }
+    var value = char || tryConsume("ESCAPED_CHAR");
+    if (value) {
+      path += value;
+      continue;
+    }
+    if (path) {
+      result.push(path);
+      path = "";
+    }
+    var open = tryConsume("OPEN");
+    if (open) {
+      var prefix = consumeText();
+      var name_1 = tryConsume("NAME") || "";
+      var pattern_1 = tryConsume("PATTERN") || "";
+      var suffix = consumeText();
+      mustConsume("CLOSE");
+      result.push({
+        name: name_1 || (pattern_1 ? key++ : ""),
+        pattern: name_1 && !pattern_1 ? safePattern(prefix) : pattern_1,
+        prefix,
+        suffix,
+        modifier: tryConsume("MODIFIER") || ""
+      });
+      continue;
+    }
+    mustConsume("END");
+  }
+  return result;
+}
+__name(parse, "parse");
+function match(str, options) {
+  var keys = [];
+  var re = pathToRegexp(str, keys, options);
+  return regexpToFunction(re, keys, options);
+}
+__name(match, "match");
+function regexpToFunction(re, keys, options) {
+  if (options === void 0) {
+    options = {};
+  }
+  var _a = options.decode, decode = _a === void 0 ? function(x) {
+    return x;
+  } : _a;
+  return function(pathname) {
+    var m = re.exec(pathname);
+    if (!m)
+      return false;
+    var path = m[0], index = m.index;
+    var params = /* @__PURE__ */ Object.create(null);
+    var _loop_1 = /* @__PURE__ */ __name(function(i2) {
+      if (m[i2] === void 0)
+        return "continue";
+      var key = keys[i2 - 1];
+      if (key.modifier === "*" || key.modifier === "+") {
+        params[key.name] = m[i2].split(key.prefix + key.suffix).map(function(value) {
+          return decode(value, key);
+        });
+      } else {
+        params[key.name] = decode(m[i2], key);
+      }
+    }, "_loop_1");
+    for (var i = 1; i < m.length; i++) {
+      _loop_1(i);
+    }
+    return { path, index, params };
+  };
+}
+__name(regexpToFunction, "regexpToFunction");
+function escapeString(str) {
+  return str.replace(/([.+*?=^!:${}()[\]|/\\])/g, "\\$1");
+}
+__name(escapeString, "escapeString");
+function flags(options) {
+  return options && options.sensitive ? "" : "i";
+}
+__name(flags, "flags");
+function regexpToRegexp(path, keys) {
+  if (!keys)
+    return path;
+  var groupsRegex = /\((?:\?<(.*?)>)?(?!\?)/g;
+  var index = 0;
+  var execResult = groupsRegex.exec(path.source);
+  while (execResult) {
+    keys.push({
+      // Use parenthesized substring match if available, index otherwise
+      name: execResult[1] || index++,
+      prefix: "",
+      suffix: "",
+      modifier: "",
+      pattern: ""
+    });
+    execResult = groupsRegex.exec(path.source);
+  }
+  return path;
+}
+__name(regexpToRegexp, "regexpToRegexp");
+function arrayToRegexp(paths, keys, options) {
+  var parts = paths.map(function(path) {
+    return pathToRegexp(path, keys, options).source;
+  });
+  return new RegExp("(?:".concat(parts.join("|"), ")"), flags(options));
+}
+__name(arrayToRegexp, "arrayToRegexp");
+function stringToRegexp(path, keys, options) {
+  return tokensToRegexp(parse(path, options), keys, options);
+}
+__name(stringToRegexp, "stringToRegexp");
+function tokensToRegexp(tokens, keys, options) {
+  if (options === void 0) {
+    options = {};
+  }
+  var _a = options.strict, strict = _a === void 0 ? false : _a, _b = options.start, start = _b === void 0 ? true : _b, _c = options.end, end = _c === void 0 ? true : _c, _d = options.encode, encode = _d === void 0 ? function(x) {
+    return x;
+  } : _d, _e = options.delimiter, delimiter = _e === void 0 ? "/#?" : _e, _f = options.endsWith, endsWith = _f === void 0 ? "" : _f;
+  var endsWithRe = "[".concat(escapeString(endsWith), "]|$");
+  var delimiterRe = "[".concat(escapeString(delimiter), "]");
+  var route = start ? "^" : "";
+  for (var _i = 0, tokens_1 = tokens; _i < tokens_1.length; _i++) {
+    var token = tokens_1[_i];
+    if (typeof token === "string") {
+      route += escapeString(encode(token));
+    } else {
+      var prefix = escapeString(encode(token.prefix));
+      var suffix = escapeString(encode(token.suffix));
+      if (token.pattern) {
+        if (keys)
+          keys.push(token);
+        if (prefix || suffix) {
+          if (token.modifier === "+" || token.modifier === "*") {
+            var mod = token.modifier === "*" ? "?" : "";
+            route += "(?:".concat(prefix, "((?:").concat(token.pattern, ")(?:").concat(suffix).concat(prefix, "(?:").concat(token.pattern, "))*)").concat(suffix, ")").concat(mod);
+          } else {
+            route += "(?:".concat(prefix, "(").concat(token.pattern, ")").concat(suffix, ")").concat(token.modifier);
+          }
+        } else {
+          if (token.modifier === "+" || token.modifier === "*") {
+            throw new TypeError('Can not repeat "'.concat(token.name, '" without a prefix and suffix'));
+          }
+          route += "(".concat(token.pattern, ")").concat(token.modifier);
+        }
+      } else {
+        route += "(?:".concat(prefix).concat(suffix, ")").concat(token.modifier);
+      }
+    }
+  }
+  if (end) {
+    if (!strict)
+      route += "".concat(delimiterRe, "?");
+    route += !options.endsWith ? "$" : "(?=".concat(endsWithRe, ")");
+  } else {
+    var endToken = tokens[tokens.length - 1];
+    var isEndDelimited = typeof endToken === "string" ? delimiterRe.indexOf(endToken[endToken.length - 1]) > -1 : endToken === void 0;
+    if (!strict) {
+      route += "(?:".concat(delimiterRe, "(?=").concat(endsWithRe, "))?");
+    }
+    if (!isEndDelimited) {
+      route += "(?=".concat(delimiterRe, "|").concat(endsWithRe, ")");
+    }
+  }
+  return new RegExp(route, flags(options));
+}
+__name(tokensToRegexp, "tokensToRegexp");
+function pathToRegexp(path, keys, options) {
+  if (path instanceof RegExp)
+    return regexpToRegexp(path, keys);
+  if (Array.isArray(path))
+    return arrayToRegexp(path, keys, options);
+  return stringToRegexp(path, keys, options);
+}
+__name(pathToRegexp, "pathToRegexp");
+
+// ../../../../.nvm/versions/node/v23.11.0/lib/node_modules/wrangler/templates/pages-template-worker.ts
+var escapeRegex = /[.+?^${}()|[\]\\]/g;
+function* executeRequest(request) {
+  const requestPath = new URL(request.url).pathname;
+  for (const route of [...routes].reverse()) {
+    if (route.method && route.method !== request.method) {
+      continue;
+    }
+    const routeMatcher = match(route.routePath.replace(escapeRegex, "\\$&"), {
+      end: false
+    });
+    const mountMatcher = match(route.mountPath.replace(escapeRegex, "\\$&"), {
+      end: false
+    });
+    const matchResult = routeMatcher(requestPath);
+    const mountMatchResult = mountMatcher(requestPath);
+    if (matchResult && mountMatchResult) {
+      for (const handler of route.middlewares.flat()) {
+        yield {
+          handler,
+          params: matchResult.params,
+          path: mountMatchResult.path
+        };
+      }
+    }
+  }
+  for (const route of routes) {
+    if (route.method && route.method !== request.method) {
+      continue;
+    }
+    const routeMatcher = match(route.routePath.replace(escapeRegex, "\\$&"), {
+      end: true
+    });
+    const mountMatcher = match(route.mountPath.replace(escapeRegex, "\\$&"), {
+      end: false
+    });
+    const matchResult = routeMatcher(requestPath);
+    const mountMatchResult = mountMatcher(requestPath);
+    if (matchResult && mountMatchResult && route.modules.length) {
+      for (const handler of route.modules.flat()) {
+        yield {
+          handler,
+          params: matchResult.params,
+          path: matchResult.path
+        };
+      }
+      break;
+    }
+  }
+}
+__name(executeRequest, "executeRequest");
+var pages_template_worker_default = {
+  async fetch(originalRequest, env, workerContext) {
+    let request = originalRequest;
+    const handlerIterator = executeRequest(request);
+    let data = {};
+    let isFailOpen = false;
+    const next = /* @__PURE__ */ __name(async (input, init) => {
+      if (input !== void 0) {
+        let url = input;
+        if (typeof input === "string") {
+          url = new URL(input, request.url).toString();
+        }
+        request = new Request(url, init);
+      }
+      const result = handlerIterator.next();
+      if (result.done === false) {
+        const { handler, params, path } = result.value;
+        const context = {
+          request: new Request(request.clone()),
+          functionPath: path,
+          next,
+          params,
+          get data() {
+            return data;
+          },
+          set data(value) {
+            if (typeof value !== "object" || value === null) {
+              throw new Error("context.data must be an object");
+            }
+            data = value;
+          },
+          env,
+          waitUntil: workerContext.waitUntil.bind(workerContext),
+          passThroughOnException: /* @__PURE__ */ __name(() => {
+            isFailOpen = true;
+          }, "passThroughOnException")
+        };
+        const response = await handler(context);
+        if (!(response instanceof Response)) {
+          throw new Error("Your Pages function should return a Response");
+        }
+        return cloneResponse(response);
+      } else if ("ASSETS") {
+        const response = await env["ASSETS"].fetch(request);
+        return cloneResponse(response);
+      } else {
+        const response = await fetch(request);
+        return cloneResponse(response);
+      }
+    }, "next");
+    try {
+      return await next();
+    } catch (error) {
+      if (isFailOpen) {
+        const response = await env["ASSETS"].fetch(request);
+        return cloneResponse(response);
+      }
+      throw error;
+    }
+  }
+};
+var cloneResponse = /* @__PURE__ */ __name((response) => (
+  // https://fetch.spec.whatwg.org/#null-body-status
+  new Response(
+    [101, 204, 205, 304].includes(response.status) ? null : response.body,
+    response
+  )
+), "cloneResponse");
+
+// ../../../../.nvm/versions/node/v23.11.0/lib/node_modules/wrangler/templates/middleware/middleware-ensure-req-body-drained.ts
 var drainBody = /* @__PURE__ */ __name(async (request, env, _ctx, middlewareCtx) => {
   try {
     return await middlewareCtx.next(request, env);
@@ -1638,7 +2167,7 @@ var drainBody = /* @__PURE__ */ __name(async (request, env, _ctx, middlewareCtx)
 }, "drainBody");
 var middleware_ensure_req_body_drained_default = drainBody;
 
-// ../../../.nvm/versions/node/v23.11.0/lib/node_modules/wrangler/templates/middleware/middleware-miniflare3-json-error.ts
+// ../../../../.nvm/versions/node/v23.11.0/lib/node_modules/wrangler/templates/middleware/middleware-miniflare3-json-error.ts
 function reduceError(e) {
   return {
     name: e?.name,
@@ -1661,14 +2190,14 @@ var jsonError = /* @__PURE__ */ __name(async (request, env, _ctx, middlewareCtx)
 }, "jsonError");
 var middleware_miniflare3_json_error_default = jsonError;
 
-// .wrangler/tmp/bundle-xMTRyo/middleware-insertion-facade.js
+// ../.wrangler/tmp/bundle-2HQ8Vh/middleware-insertion-facade.js
 var __INTERNAL_WRANGLER_MIDDLEWARE__ = [
   middleware_ensure_req_body_drained_default,
   middleware_miniflare3_json_error_default
 ];
-var middleware_insertion_facade_default = server_default;
+var middleware_insertion_facade_default = pages_template_worker_default;
 
-// ../../../.nvm/versions/node/v23.11.0/lib/node_modules/wrangler/templates/middleware/common.ts
+// ../../../../.nvm/versions/node/v23.11.0/lib/node_modules/wrangler/templates/middleware/common.ts
 var __facade_middleware__ = [];
 function __facade_register__(...args) {
   __facade_middleware__.push(...args.flat());
@@ -1693,7 +2222,7 @@ function __facade_invoke__(request, env, ctx, dispatch, finalMiddleware) {
 }
 __name(__facade_invoke__, "__facade_invoke__");
 
-// .wrangler/tmp/bundle-xMTRyo/middleware-loader.entry.ts
+// ../.wrangler/tmp/bundle-2HQ8Vh/middleware-loader.entry.ts
 var __Facade_ScheduledController__ = class ___Facade_ScheduledController__ {
   constructor(scheduledTime, cron, noRetry) {
     this.scheduledTime = scheduledTime;
@@ -1793,4 +2322,4 @@ export {
   __INTERNAL_WRANGLER_MIDDLEWARE__,
   middleware_loader_entry_default as default
 };
-//# sourceMappingURL=index.js.map
+//# sourceMappingURL=functionsWorker-0.5362319365159292.mjs.map

@@ -227,63 +227,88 @@ function renderTaskInfoRows(tasks) {
     });
 }
 
+// Helper function: Parse YYYY-MM-DD string to local Date object at midnight
+function parseLocalDate(dateString) {
+    if (!dateString) return null;
+    const parts = dateString.split('-').map(Number);
+    if (parts.length === 3 && !isNaN(parts[0]) && !isNaN(parts[1]) && !isNaN(parts[2])) {
+        // Note: Month is 0-indexed in JavaScript Date constructor
+        return new Date(parts[0], parts[1] - 1, parts[2]);
+    }
+    console.warn(`Invalid date string format found: ${dateString}`);
+    return null; // Invalid format
+}
+
+// Helper function: Calculate difference in days between two Date objects (assumed to be at midnight in the same timezone)
+function calculateDaysDifference(startDate, endDate) {
+    const diffTime = endDate.getTime() - startDate.getTime();
+    // Round the result to handle potential DST or minor time discrepancies if dates weren't perfectly at midnight UTC
+    return Math.round(diffTime / (1000 * 60 * 60 * 24));
+}
+
 function renderTaskTimelineRows(tasks, timelineStartDate, totalUnitsInView, viewMode) {
+    timelineBarAreaContainer.innerHTML = ''; // Clear previous bars
+    // Ensure timelineStartDate is at local midnight for consistent comparison
+    const normalizedTimelineStart = new Date(timelineStartDate.getFullYear(), timelineStartDate.getMonth(), timelineStartDate.getDate());
+
     tasks.forEach(task => {
-        // 1. Create the timeline row element for this task first
         const taskTimelineRow = document.createElement('div');
         taskTimelineRow.className = 'gantt-task-row-timeline';
 
-        // Check if task has valid dates before proceeding to calculate bar
-        if (!task.start || !task.end) {
-            // Handle tasks without dates (e.g., skip rendering a bar or render differently)
-            timelineBarAreaContainer.appendChild(taskTimelineRow); // Append empty row
-            return; // Skip bar rendering for this task
+        if (task.start && task.end) {
+            try {
+                const taskStartDateLocal = parseLocalDate(task.start);
+                const taskEndDateLocal = parseLocalDate(task.end);
+
+                if (!taskStartDateLocal || !taskEndDateLocal) {
+                    // Skip this task if dates are invalid
+                    console.error(`Skipping task ${task.id} due to invalid date format or parsing error.`);
+                    timelineBarAreaContainer.appendChild(taskTimelineRow); // Add empty row
+                    return; // Continue to next task
+                }
+
+                let offsetUnits = calculateDaysDifference(normalizedTimelineStart, taskStartDateLocal);
+                // Duration includes the end date, so it's difference + 1
+                let durationUnits = calculateDaysDifference(taskStartDateLocal, taskEndDateLocal) + 1;
+
+                // Ensure duration is at least 1 day
+                durationUnits = Math.max(1, durationUnits);
+
+                // --- Create and append bar (logic remains the same) ---
+                const taskBar = document.createElement('div');
+                taskBar.className = 'gantt-task-bar';
+                const leftPercentage = Math.max(0, (offsetUnits / totalUnitsInView) * 100);
+                const widthPercentage = Math.min((durationUnits / totalUnitsInView) * 100, 100 - leftPercentage);
+
+                // Basic validation: Ensure calculations are reasonable
+                if (leftPercentage >= 0 && leftPercentage <= 100 && widthPercentage >= 0 && widthPercentage <= 100) {
+                    taskBar.style.left = `${leftPercentage}%`;
+                    taskBar.style.width = `${widthPercentage}%`;
+
+                    const progressBar = document.createElement('div');
+                    progressBar.className = 'gantt-task-progress-bar';
+                    progressBar.style.width = `${task.progress}%`;
+                    taskBar.appendChild(progressBar);
+
+                    if (task.isTentative) {
+                        taskBar.classList.add('tentative');
+                    }
+
+                    taskTimelineRow.appendChild(taskBar);
+                } else {
+                    console.warn(`Skipping bar for task ${task.id} due to invalid calculated position/width: offset=${offsetUnits}, duration=${durationUnits}, left%=${leftPercentage}, width%=${widthPercentage}`);
+                }
+
+            } catch (e) {
+                console.error(`Error processing task ${task.id} for timeline bar:`, e);
+                // Append the row anyway, just potentially without the bar
+            }
+        } else {
+             // Task has no start/end date, row remains empty
+             console.log(`Task ${task.id} skipped for timeline bar rendering (no start/end date).`);
         }
 
-        // Convert string dates from task object to Date objects, using local timezone's midnight.
-        const taskStartParts = task.start.split('-').map(Number);
-        const taskEndParts = task.end.split('-').map(Number);
-        const taskStartDateLocal = new Date(taskStartParts[0], taskStartParts[1] - 1, taskStartParts[2]);
-        const taskEndDateLocal = new Date(taskEndParts[0], taskEndParts[1] - 1, taskEndParts[2]);
-        const normalizedTimelineStartLocal = new Date(timelineStartDate.getFullYear(), timelineStartDate.getMonth(), timelineStartDate.getDate());
-
-        // 2. Calculate offset and duration
-        let offsetUnits = 0;
-        let durationUnits = 0;
-        switch (viewMode) {
-            case 'daily':
-            default:
-                offsetUnits = (taskStartDateLocal.getTime() - normalizedTimelineStartLocal.getTime()) / (1000 * 60 * 60 * 24);
-                durationUnits = (taskEndDateLocal.getTime() - taskStartDateLocal.getTime()) / (1000 * 60 * 60 * 24) + 1;
-                break;
-        }
-        offsetUnits = Math.round(offsetUnits);
-        durationUnits = Math.max(1, Math.round(durationUnits));
-
-        // 3. Create the task bar element
-        const taskBar = document.createElement('div');
-        taskBar.className = 'gantt-task-bar';
-
-        // 4. Set styles for the task bar
-        const leftPercentage = Math.max(0, (offsetUnits / totalUnitsInView) * 100);
-        const widthPercentage = Math.min((durationUnits / totalUnitsInView) * 100, 100 - leftPercentage);
-        taskBar.style.left = `${leftPercentage}%`;
-        taskBar.style.width = `${widthPercentage}%`;
-
-        // Add progress bar inside the task bar
-        const progressBar = document.createElement('div');
-        progressBar.className = 'gantt-task-progress-bar';
-        progressBar.style.width = `${task.progress}%`;
-        taskBar.appendChild(progressBar);
-
-        if (task.isTentative) {
-            taskBar.classList.add('tentative');
-        }
-
-        // 5. Append the task bar to the timeline row
-        taskTimelineRow.appendChild(taskBar);
-
-        // 6. Append the completed timeline row to the main container
+        // Append the row (potentially empty or with a bar) to the main container
         timelineBarAreaContainer.appendChild(taskTimelineRow);
     });
 }
@@ -362,8 +387,8 @@ Date.prototype.getWeek = function() {
 
 // Function to synchronize row heights
 function synchronizeRowHeights() {
-    const infoRows = taskInfoAreaContainer.querySelectorAll('.gantt-task-row-info');
-    const timelineRows = timelineBarAreaContainer.querySelectorAll('.gantt-task-row-timeline');
+    const infoRows = Array.from(taskInfoAreaContainer.querySelectorAll('.gantt-task-row-info'));
+    const timelineRows = Array.from(timelineBarAreaContainer.querySelectorAll('.gantt-task-row-timeline'));
 
     if (infoRows.length !== timelineRows.length) {
         console.warn('Row count mismatch between info and timeline areas. Cannot sync heights.');
@@ -372,12 +397,21 @@ function synchronizeRowHeights() {
 
     // Use requestAnimationFrame to ensure layout calculations are complete
     requestAnimationFrame(() => {
+        let totalHeight = 0;
         for (let i = 0; i < infoRows.length; i++) {
-            const infoRowHeight = infoRows[i].offsetHeight;
-            // Set the height for the corresponding timeline row
-            // Ensure a minimum height as well, in case infoRow height is very small
-            timelineRows[i].style.height = `${Math.max(infoRowHeight, 25)}px`; // Use minimum height from CSS or actual height
+            // Reset timeline row height first to allow info row to calculate natural height
+            timelineRows[i].style.height = '';
+            // Get height using getBoundingClientRect for potentially better accuracy
+            const infoRowRect = infoRows[i].getBoundingClientRect();
+            const infoRowHeight = infoRowRect.height;
+            // Set the exact height for the corresponding timeline row
+            timelineRows[i].style.height = `${infoRowHeight}px`;
+            totalHeight += infoRowHeight; // Keep track for potential container height setting
         }
+        // Optionally set the height of the container elements if needed
+        // taskInfoAreaContainer.style.height = `${totalHeight}px`;
+        // timelineBarAreaContainer.style.height = `${totalHeight}px`;
+        // console.log('Row heights synchronized');
     });
 
 }
